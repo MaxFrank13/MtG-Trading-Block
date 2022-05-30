@@ -13,16 +13,17 @@ function Navigation() {
     <Navbar bg="dark" variant="dark">
       <span className="mtg">Magic: The Gathering</span>
       <Container>
-        <Navbar.Brand href="/">Trading Block</Navbar.Brand>
-        <Nav className="me-auto">
-          <Nav.Link href="/profile">Profile</Nav.Link>
-          <Nav.Link href="/binder">Binder</Nav.Link>
-          <Nav.Link href="/newTrade">Create Trade</Nav.Link>
+          <Navbar.Brand className="navOp" href="/">Trading Block</Navbar.Brand>
+          <Nav className="me-auto">
+          {/* <Nav.Link className="navOp" href="/">Trading Block</Nav.Link> */}
+          <Nav.Link className="navOp" href="/profile">Profile</Nav.Link>
+          <Nav.Link className="navOp" href="/collection">Collection</Nav.Link>
+          <Nav.Link className="navOp" href="/newTrade">New Trade</Nav.Link>
         </Nav>
         <Form className="d-flex">
           <FormControl
             type="search"
-            placeholder="Search Cards"
+            placeholder="Search Available Cards"
             className="me-2"
             aria-label="Search"
           />
