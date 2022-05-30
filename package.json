@@ -1,0 +1,23 @@
+{
+  "name": "mtg-trading-block",
+  "version": "1.0.0",
+  "description": "A place for Magic players to trade cards and interact with others.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaxFrank13/MtG-Trading-Block.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MaxFrank13/MtG-Trading-Block/issues"
+  },
+  "homepage": "https://github.com/MaxFrank13/MtG-Trading-Block#readme",
+  "devDependencies": {
+    "concurrently": "^5.1.0"
+  }
+}
