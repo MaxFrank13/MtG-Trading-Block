@@ -5,9 +5,11 @@
 --lightGray: #EEEEEE;
 --orange: #FF5722;
 --olive: #8B9A46;
+--black:#212529;
 }
 
-body {
+body, html {
+  background-color: var(--slate);
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -30,5 +32,33 @@ code {
 .mtg {
   color: var(--orange);
   padding-left: 2%;
-  padding-right: 2%;
 }
+
+.navOp:hover{
+  box-shadow: 0 4px 2px -2px var(--lightGray);
+}
+
+.profile{
+  margin: 5%;
+  color: var(--blue);
+  background-color: var(--black);
+  padding: 2%;
+}
+
+h3 {
+  padding-top:1% ;
+  padding-bottom: 2%;
+}
+.tradeProp{
+  margin-left: 25%;
+}
+
+.tradeHistory{
+  margin-left: 5%;
+}
+
+.tradeProfile{
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
