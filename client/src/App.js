@@ -3,10 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Header from './components/Header';
-import Profile from'./pages/Profile';
-import TradeBlock from'./pages/TradeBlock';
+import Profile from './pages/Profile';
+import TradeBlock from './pages/TradeBlock';
 import MessageInterface from './messages/MessageInterface';
-import Collection from'./pages/Collection';
+import Collection from './pages/Collection';
 
 import io from 'socket.io-client';
 
@@ -17,26 +17,30 @@ socket.on("connect_error", (err) => {
 });
 
 function App() {
-  
+
   const [chat, setChat] = useState(null);
 
   return (
     <div>
       <Router>
         <div className="wrapper">
-          <Header /> 
+          <Header />
           <div className="container">
             <Routes>
-              <Route 
-                path="/" 
-                element={<TradeBlock/>} 
+              <Route
+                path="/"
+                element={<TradeBlock />}
               />
-              <Route 
-                path="/profile" 
-                element={<Profile />} 
+              <Route
+                path="/profile"
+                element={<Profile />}
+              />
+              <Route
+                path="/collection"
+                element={<Collection />}
               />
             </Routes>
-          </div>    
+          </div>
         </div>
       </Router>
       {chat && (
@@ -44,7 +48,7 @@ function App() {
           socket={socket}
         />
       )}
-      <button 
+      <button
         onClick={() => setChat(!chat)}
         className='chat-button'
       >
