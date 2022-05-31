@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import FormInput from './FormInput';
 
 export default function ChatInterface({ handleMessageSubmit }) {
+
+  // const [messagePanel, setMessagePanel] = useState([]);
+
+  useEffect(() => {
+    const messageInterface = document.querySelector('.chat-messages');
+
+    messageInterface.scrollTop = messageInterface.scrollHeight;
+  },[])
+
   return (
     <section className='chat-interface'>
       <h3>Username</h3>
