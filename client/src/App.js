@@ -6,6 +6,7 @@ import Header from './components/Header';
 import Profile from'./pages/Profile';
 import TradeBlock from'./pages/TradeBlock';
 import MessageInterface from './messages/MessageInterface';
+import Collection from'./pages/Collection';
 
 import io from 'socket.io-client';
 
