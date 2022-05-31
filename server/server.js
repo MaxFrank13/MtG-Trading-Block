@@ -14,9 +14,9 @@ app.use(cors());
 const httpServer = require('http').createServer(app);
 const io = require('socket.io')(httpServer, {
   cors: {
-    origin: 'http://localhost:3000',
-    methods: ["GET", "POST"],
-  }
+    origin: 'http://localhost:3000'
+  },
+  allowUpgrades: false
 });
 
 io.on('connection', (socket) => {
@@ -24,7 +24,11 @@ io.on('connection', (socket) => {
 
   socket.on('send_message', (data) => {
     socket.broadcast.emit("receive_message", data )
-  })
+  });
+
+  socket.on("connect_error", (err) => {
+    console.log(`connect_error due to ${err.message}`);
+  });
 })
 
 io.listen(httpServer);

@@ -1,3 +1,105 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ==== Message Interface ==== */
+
 section.message-interface {
-  background: teal;
+  background: var(--black);
+  width: clamp(280px, 30%, 420px);
+  height: fit-content;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border-top-left-radius: 0.5rem;
+}
+
+/* ==== Form Input ==== */
+
+form.form-input {
+  display: flex;
+  justify-content: end;
+}
+
+form.form-input textarea[type=text] {
+  width: clamp(10rem, 100%, 18rem);
+  border: none;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  padding: 0.25rem;
+  font-weight: 500;
+}
+
+
+form.form-input textarea[type=text]:focus {
+  outline: none;
+}
+
+form.form-input button {
+  border: none;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  background: var(--orange);
+  font-weight: 600;
+  padding: 0.25rem;
+}
+
+form.form-input button:hover {
+  filter: brightness(0.9);
+}
+
+/* ==== Chat Interface ==== */
+
+button.chat-button {
+  position: fixed;
+  bottom: 35%;
+  right: 2%;
+  padding: 0 0.5rem;
+}
+
+section.chat-interface {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+section.chat-interface h3 {
+  color: var(--lightGray);
+}
+
+section.chat-messages {
+  background: var(--lightGray);
+  padding: 0.25rem;
+  min-height: 8rem;
+  max-height: 12rem;
+  border-radius: 0.25rem;
+  overflow: scroll;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+
+section.chat-messages p {
+  background: var(--blue);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  align-self: end;
+}
+section.chat-messages p:nth-child(odd) {
+  background: var(--olive);
+  align-self: start;
+}
+
+/* ==== Inbox Interface ==== */
+
+section.inbox-interface {
+  display: flex;
+  flex-direction: column;
 }

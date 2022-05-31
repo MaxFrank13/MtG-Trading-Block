@@ -1,9 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import ChatInterface from "./ChatInterface";
+import InboxInterface from "./InboxInterface";
 import './styles.css'
 
 export default function MessageInterface({ socket }) {
 
-  const handleMessageClick = (e) => {
+  const [activeMessage, setActiveMessage] = useState(true);
+
+  const handleMessageSubmit = (e) => {
     e.preventDefault();
     socket.emit('send_message', {
       hello: 'hello world'
@@ -24,18 +28,21 @@ export default function MessageInterface({ socket }) {
       //   };
       //   return [ data ];
       // });
-
     });
   }, []);
 
   return (
     <section className="message-interface">
-      <div>
-        <button onClick={handleMessageClick}>Click here</button>
-      </div>
-      <div>
-        <p>messages here</p>
-      </div>
+      <button onClick={() => setActiveMessage(!activeMessage)}>
+        {activeMessage ? 'invite' : 'chat'}
+      </button>
+      {activeMessage ? (
+        <ChatInterface 
+          handleMessageSubmit={handleMessageSubmit}
+        />
+      ) : (
+        <InboxInterface />
+      )}
     </section>
   )
 }
