@@ -5,7 +5,7 @@ const typeDefs = gql`
     _id: ID
     username: String!
     email: String!
-    collection: [Card]
+    binder: [Card]
   }
 
   type Card {
