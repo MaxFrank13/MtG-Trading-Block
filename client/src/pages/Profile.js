@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 function Profile() {
   return (
-    <div className="profile">
+    <div className="backDrop">
       <Container fluid="md">
         <Row>
           <Col>

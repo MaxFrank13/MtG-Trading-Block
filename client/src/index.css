@@ -38,7 +38,7 @@ code {
   box-shadow: 0 4px 2px -2px var(--lightGray);
 }
 
-.profile{
+.backDrop{
   margin: 5%;
   color: var(--blue);
   background-color: var(--black);
@@ -61,4 +61,27 @@ h3 {
   margin-top: 5%;
   margin-bottom: 5%;
 }
+
+.logout{
+  margin-left: 5%;
+}
+
+.search{
+  margin-bottom: 5%;
+  padding-left: 15%;
+  padding-right: 15%;
+}
+
+.cardRow{
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5%;
+}
+
+.postTrade{
+  padding-top: 3%;
+  padding-left: 30%;
+  padding-right: 30%;
+}
+
 
