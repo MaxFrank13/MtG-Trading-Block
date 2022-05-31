@@ -2,6 +2,7 @@ const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 const { typeDefs, resolvers } = require('./schemas');
 const path = require('path');
+const { authMiddleware } = require('./utils/auth');
 const cors = require('cors');
 
 const app = express();
@@ -28,7 +29,8 @@ io.listen(httpServer);
 
 const apolloServer = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
+  context: authMiddleware
 });
 
 app.use(express.urlencoded({ extended: true }));
