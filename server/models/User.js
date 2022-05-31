@@ -19,7 +19,7 @@ const userSchema = new Schema({
     required: true,
     minlength: 5,
   },
-  collection: [
+  binder: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Card',

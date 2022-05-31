@@ -5,10 +5,28 @@ const typeDefs = gql`
     _id: ID
     username: String!
     email: String!
+    binder: [Card]
+  }
+
+  type Card {
+    scryfall_id: ID!
+    name: String!
+    imageNormal: String!
+    imageSmall: String!
   }
   
+  type Auth {
+    token: ID!
+    user: User
+  }
+
   type Query {
     me: User
+  }
+
+  type Mutation {
+    addUser(username: String!, email: String!, password: String!): Auth
+    login(email: String!, password: String!): Auth
   }
 `;
 
