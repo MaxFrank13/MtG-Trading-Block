@@ -70,7 +70,7 @@ export default function Login() {
           noValidate
           validated={validated}
         >
-          <h3 className='text-center'>Login</h3>
+          <h3 className='text-center'>Log In</h3>
           <Form.Group className="mb-3" controlId="formEmailLogin">
             <Form.Label>Email address</Form.Label>
             <Form.Control 
