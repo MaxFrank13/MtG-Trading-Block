@@ -1,7 +1,7 @@
 import React from 'react';
 import FormInput from './FormInput';
 
-export default function InboxInterface() {
+export default function InboxInterface({ onChange }) {
 
   const handleNewChatSubmit = (e) => {
     e.preventDefault();
@@ -13,6 +13,7 @@ export default function InboxInterface() {
       <FormInput
         onSubmit={handleNewChatSubmit}
         placeholder='invite to chat'
+        onChange={onChange}
       />
     </section>
   )
