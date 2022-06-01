@@ -2,32 +2,55 @@ import React, { useEffect, useState } from "react";
 import ChatInterface from "./ChatInterface";
 import InboxInterface from "./InboxInterface";
 import './styles.css'
+import { v4 as uuidv4 } from 'uuid';
 
-export default function MessageInterface({ socket }) {
+// Socket.io client side
+import io from 'socket.io-client';
 
+const socket = io.connect('http://localhost:3001');
+
+export default function MessageInterface() {
+  
   const [activeMessage, setActiveMessage] = useState(true);
+
+  const [messages, setMessages] = useState([]);
+
+  const [chatInputData, setChatInputData] = useState(null);
 
   const handleMessageSubmit = (e) => {
     e.preventDefault();
-    socket.emit('send_message', {
-      hello: 'hello world'
-    });
+    const id = uuidv4();
+    const newMessage = {
+      id,
+      content: chatInputData.content
+    }
+    socket.emit('send_message', newMessage);
+    setMessages([...messages, newMessage]);
+    setChatInputData(null)
   };
+
+  const handleMessageInput = (e) => {
+    const { value } = e.target;
+    setChatInputData({
+      content: value
+    });
+    console.log(chatInputData);
+  }
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
 
       console.log(data);
-      // setMessagePanel((prev) => {
+      setMessages((prev) => {
 
-      //   if (prev.length) {
-      //     if (prev.find(item => item.id === data.id)) {
-      //       return prev;
-      //     };
-      //     return [ ...prev, data ]
-      //   };
-      //   return [ data ];
-      // });
+        if (prev.length) {
+          if (prev.find(item => item.id === data.id)) {
+            return prev;
+          };
+          return [ ...prev, data ]
+        };
+        return [ data ];
+      });
     });
   }, []);
 
@@ -39,9 +62,12 @@ export default function MessageInterface({ socket }) {
       {activeMessage ? (
         <ChatInterface 
           handleMessageSubmit={handleMessageSubmit}
+          messages={messages}
+          onChange={handleMessageInput}
         />
       ) : (
-        <InboxInterface />
+        <InboxInterface 
+        />
       )}
     </section>
   )

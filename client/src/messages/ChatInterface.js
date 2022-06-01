@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import FormInput from './FormInput';
 
-export default function ChatInterface({ handleMessageSubmit }) {
+export default function ChatInterface({ handleMessageSubmit, messages, onChange }) {
 
   // const [messagePanel, setMessagePanel] = useState([]);
 
@@ -15,25 +15,14 @@ export default function ChatInterface({ handleMessageSubmit }) {
     <section className='chat-interface'>
       <h3>Username</h3>
       <section className='chat-messages'>
-        <p>
-          Hello
-        </p>
-        
-        <p>
-          Hey there
-        </p>
-
-        <p>
-          How are you?
-        </p>
-
-        <p>
-          Doing well. And you?
-        </p>
+        {messages.map(message => (
+          <p key={message.id}>{message.content}</p>
+        ))}
       </section>
       <FormInput
         onSubmit={handleMessageSubmit}
         placeholder='message'
+        onChange={onChange}
       />
     </section>
   )
