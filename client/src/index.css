@@ -64,6 +64,7 @@ h3 {
 
 .logout{
   margin-left: 5%;
+  cursor: pointer;
 }
 
 .search{
@@ -84,4 +85,15 @@ h3 {
   padding-right: 30%;
 }
 
+/* ==== Login/Sign-up Forms ==== */
+
+form.login-form,
+form.signup-form {
+  background: var(--lightGray);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  width: 22rem;
+  margin: auto;
+  margin-top: 1rem;
+}
 
