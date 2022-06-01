@@ -15,7 +15,9 @@ export default function MessageInterface() {
 
   const [messages, setMessages] = useState([]);
 
-  const [chatInputData, setChatInputData] = useState(null);
+  const [chatInputData, setChatInputData] = useState({
+    content: ''
+  });
 
   const handleMessageSubmit = (e) => {
     e.preventDefault();
@@ -26,7 +28,9 @@ export default function MessageInterface() {
     }
     socket.emit('send_message', newMessage);
     setMessages([...messages, newMessage]);
-    setChatInputData(null)
+    setChatInputData({
+      content: ''
+    })
   };
 
   const handleMessageInput = (e) => {
@@ -64,6 +68,7 @@ export default function MessageInterface() {
           handleMessageSubmit={handleMessageSubmit}
           messages={messages}
           onChange={handleMessageInput}
+          currentMessage={chatInputData}
         />
       ) : (
         <InboxInterface 
