@@ -23,6 +23,7 @@ function Navigation() {
               <Nav className="me-auto">
               <Nav.Link className="navOp" href="/profile">Profile</Nav.Link>
               <Nav.Link className="navOp" href="/collection">Collection</Nav.Link>
+              <Nav.Link className="navOp" href="/evaluate">Evaluate Trade</Nav.Link>
               {/* <Nav.Link className="navOp" href="/">Open Trades</Nav.Link> */}
               {/* <Nav.Link className="navOp" href="/logout">Log Out</Nav.Link> */}
               {/* <Nav.Link className="navOp" href="/newTrade">New Trade</Nav.Link> */}
@@ -68,8 +69,9 @@ function Navigation() {
             <Navbar.Brand 
               href='/login'
             >
-              LogIn/Signup
+              Log In / Sign Up
             </Navbar.Brand>
+            
           )}
 
       </Container>

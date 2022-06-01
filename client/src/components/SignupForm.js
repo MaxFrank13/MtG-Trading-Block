@@ -99,7 +99,7 @@ export default function Signup() {
         noValidate
         validated={validated}
       >
-        <h3 className='text-center'>Login</h3>
+        <h3 className='text-center'>Sign Up</h3>
         <Form.Group className="mb-3" controlId="formUser">
           <Form.Label>Username</Form.Label>
           <Form.Control

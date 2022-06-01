@@ -9,7 +9,7 @@ import {
 export default function Login() {
 
   return (
-    <Row>
+    <Row className="formRow">
       <LoginForm />
       <SignupForm />
     </Row>
