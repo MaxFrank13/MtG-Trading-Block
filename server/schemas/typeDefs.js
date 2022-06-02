@@ -14,6 +14,18 @@ const typeDefs = gql`
     imageNormal: String!
     imageSmall: String!
   }
+
+  type Chat {
+    _id: ID!
+    users: [User]
+    messages: [Message]
+  }
+
+  type Message {
+    _id: ID!
+    user: User
+    content: String!
+  }
   
   type Auth {
     token: ID!
@@ -28,6 +40,7 @@ const typeDefs = gql`
   type Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
     loginUser(email: String!, password: String!): Auth
+    addChat(currentEmail: String!, inviteEmail: String!) : Chat
   }
 `;
 

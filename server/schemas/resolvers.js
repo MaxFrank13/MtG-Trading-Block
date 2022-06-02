@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Card } = require('../models');
+const { User, Card, Chat, Message } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -37,7 +37,25 @@ const resolvers = {
       const token = signToken(user);
 
       return { token, user };
-    }
+    },
+    addChat: async (parent, { currentEmail, inviteEmail }) => {
+      const current = await User.findOne({ currentEmail });
+
+      if (!current) {
+        throw new AuthenticationError('No current user data.');
+      };
+
+      const invite = await User.findOne({ inviteEmail });
+
+      if (!invite) {
+        throw new AuthenticationError('No user with that email.');
+      };
+
+      if (current && invite) {
+        const newChat = await Chat.create();
+        return newChat;
+      }
+    },
   }
 }
 
