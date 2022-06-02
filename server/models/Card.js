@@ -9,12 +9,16 @@ const cardSchema = new Schema({
     type: String,
     required: true
   },
+  imageSmall: {
+    type: String,
+    required: true
+  },
   imageNormal: {
     type: String,
     required: true
   },
-  imageSmall: {
-    type: String,
+  price: {
+    type: Number,
     required: true
   }
 });
