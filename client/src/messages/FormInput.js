@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-export default function FormInput({ onSubmit, placeholder, onChange, currentMessage }) {
+export default function FormInput({ onSubmit, placeholder, onChange, value }) {
+
   return (
-    <form className='form-input'>
-      <textarea 
-        type='text' 
-        rows='1' 
+    <form onSubmit={onSubmit} className='form-input'>
+      <input
+        type='text'
+        rows='1'
         placeholder={placeholder}
         onChange={onChange}
-        value={currentMessage?.content}
-      >
-      </textarea>
-      <button onClick={onSubmit}>
+        value={value}
+      />
+
+      <button>
         send
       </button>
     </form>

@@ -27,7 +27,7 @@ form.form-input {
   justify-content: flex-end;
 }
 
-form.form-input textarea[type=text] {
+form.form-input input[type=text] {
   width: 100%;
   border: none;
   border-top-left-radius: 0.5rem;
@@ -38,7 +38,7 @@ form.form-input textarea[type=text] {
 }
 
 
-form.form-input textarea[type=text]:focus {
+form.form-input input[type=text]:focus {
   outline: none;
 }
 
@@ -87,17 +87,49 @@ section.chat-messages {
   gap: 0.5rem;
 }
 
+section.chat-messages div {
+  display: flex;
+  flex-direction: column;
+}
 
 section.chat-messages p {
-  background: var(--blue);
+  margin: 0;
   padding: 0.5rem;
   border-radius: 0.25rem;
-  align-self: flex-end;
 }
-section.chat-messages p:nth-child(odd) {
+
+h4.chat-alert {
+  position: fixed;
+  right: 2%;
+  bottom: 22%;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  width: 35%;
+}
+
+div.chat-them p {
   background: var(--olive);
-  align-self: start;
 }
+div.chat-them {
+  align-self: flex-start;
+}
+
+div.chat-me p {
+  background: var(--blue);
+
+}
+div.chat-me {
+  align-self: flex-end;
+  text-align: right;
+}
+
+section.chat-messages div small{
+  font-size: 0.75rem;
+  display: flex;
+  flex-direction: column;
+}
+
+
 
 /* ==== Inbox Interface ==== */
 
