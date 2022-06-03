@@ -33,8 +33,8 @@ function Collection() {
       const cardData = data.map((card) => ({
         scryfall_id: card.id,
         name: card.name,
-        imageSmall: card.image_uris.small,
-        imageNormal: card.image_uris.normal,
+        imageSmall: card.card_faces ? card.card_faces[0].image_uris.small : card.image_uris.small,
+        imageNormal: card.card_faces ? card.card_faces[0].image_uris.normal : card.image_uris.normal,
         price: card.prices.usd
       }));
 
@@ -91,8 +91,8 @@ function Collection() {
         <Row xs={1} md={2} lg={3} className="g-4">
           {searchedCards.map((card) => {
             return (
-              <Col>
-                <Card key={card.scryfall_id}>
+              <Col key={card.scryfall_id}>
+                <Card>
                   <Card.Img variant="top" src={card.imageNormal} />
                   <Card.Body>
                     <Card.Title>{card.name}</Card.Title>
