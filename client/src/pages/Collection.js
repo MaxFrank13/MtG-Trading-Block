@@ -29,7 +29,6 @@ function Collection() {
       }
 
       const { data } = await response.json();
-      console.log(data);
 
       const cardData = data.map((card) => ({
         scryfall_id: card.id,
@@ -38,7 +37,6 @@ function Collection() {
         imageNormal: card.card_faces ? card.card_faces[0].image_uris.normal : card.image_uris.normal,
         price: card.prices.usd
       }));
-      console.log(cardData);
 
       setSearchedCards(cardData);
       setSearchInput('');
@@ -82,7 +80,7 @@ function Collection() {
                     }
                   `}
                 </style>
-                <Button variant="search" size="lg">
+                <Button type="submit" variant="search" size="lg">
                   Search
                 </Button>
               </>
