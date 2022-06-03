@@ -22,9 +22,22 @@ const io = require('socket.io')(httpServer, {
 io.on('connection', (socket) => {
   console.log(`User Connected: ${socket.id}`);
 
+  // Broadcast to everyone
+  // socket.on('send_message', (data) => {
+  //   socket.broadcast.emit("receive_message", data )
+  // });
+
   socket.on('send_message', (data) => {
-    socket.broadcast.emit("receive_message", data )
+    socket.to(data.room._id).emit('receive_message', data );
   });
+  
+
+
+  socket.on('join_room', (data) => {
+    if (data.chatRef.current._id) socket.leave(data.chatRef.current._id);
+    socket.join(data.newRoom);
+    console.log(`joined room ${data.newRoom}`);
+  })
 
   socket.on("connect_error", (err) => {
     console.log(`connect_error due to ${err.message}`);

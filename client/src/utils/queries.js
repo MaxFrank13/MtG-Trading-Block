@@ -6,7 +6,6 @@ export const GET_ME = gql`
       _id
       username
       email
-      binder
     }
   }
 `;
@@ -18,6 +17,28 @@ export const GET_USERS = gql`
       username
       email
       binder
+    }
+  }
+`;
+
+export const GET_CHATS = gql`
+  query myChats {
+    myChats {
+      _id
+      messages {
+        _id
+        chat_id
+        username
+        content
+        createdAt
+      }
+      userCount
+      messageCount
+      users {
+        _id
+        username
+        email
+      }
     }
   }
 `;

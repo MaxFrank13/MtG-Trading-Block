@@ -23,3 +23,28 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+export const ADD_CHAT = gql`
+  mutation addChat($inviteEmail: String!) {
+    addChat(inviteEmail: $inviteEmail) {
+      _id
+      users {
+        username
+        _id
+        email
+        binder {
+          name
+        }
+      }
+      userCount
+    }
+  }
+`;
+
+export const ADD_MESSAGE = gql`
+  mutation Mutation($chat_id: ID!, $createdAt: String!, $content: String!, $username: String!) {
+    addMessage(chat_id: $chat_id, createdAt: $createdAt, content: $content, username: $username) {
+      _id
+    }
+  }
+`;
