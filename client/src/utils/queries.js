@@ -20,3 +20,25 @@ export const GET_USERS = gql`
     }
   }
 `;
+
+export const GET_CHATS = gql`
+  query myChats {
+    myChats {
+      _id
+      messages {
+        _id
+        chat_id
+        username
+        content
+        createdAt
+      }
+      userCount
+      messageCount
+      users {
+        _id
+        username
+        email
+      }
+    }
+  }
+`;

@@ -1,21 +1,25 @@
 import React, { useEffect } from 'react';
 import FormInput from './FormInput';
 
-export default function ChatInterface({ handleMessageSubmit, messages, onChange, currentMessage, userData }) {
+export default function ChatInterface({ handleMessageSubmit, messages, onChange, currentMessage, userData, chatData }) {
 
   useEffect(() => {
     const messageInterface = document.querySelector('.chat-messages');
 
     messageInterface.scrollTop = messageInterface.scrollHeight;
-  },[messages])
+  }, [messages, chatData])
 
   return (
     <section className='chat-interface'>
-      <h3>Username</h3>
+      {chatData.users?.filter(user => user.username !== userData.username).map((filteredUser, i) => (
+        <h3 key={i}>
+          {filteredUser.username}
+        </h3>
+      ))}
       <section className='chat-messages'>
-        {messages.map(message => (
-          <div 
-            key={message.id}
+        {chatData.messages?.map(message => (
+          <div
+            key={message._id}
             className={userData.username === message.username ? 'chat-me' : 'chat-them'}
           >
             <p>
@@ -26,11 +30,10 @@ export default function ChatInterface({ handleMessageSubmit, messages, onChange,
                 {message.username}
               </span>
               <span>
-                {new Date(message.createdAt).toLocaleString()}
+                {message.createdAt}
               </span>
             </small>
           </div>
-
         ))}
       </section>
       <FormInput
