@@ -22,22 +22,6 @@ export default function Signup() {
   const [addUser, { error }] = useMutation(ADD_USER);
 
   const [validated, setValidated] = useState(false);
-  
-  // useEffect(() => {
-  //   const pw = document.querySelector('#formPassword');
-  //   const pwConfirm = document.querySelector('#formConfirmPassword');
-
-  //   pw.onChange = confirmPassword();
-  //   pwConfirm.onKeyUp = confirmPassword();
-
-  //   function confirmPassword() {
-  //     if (pw.value !== pwConfirm.value) {
-  //       setPWMatch('not a match');
-  //       return;
-  //     }
-  //     setPWMatch('passwords match')
-  //   }
-  // }, [])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -80,7 +64,6 @@ export default function Signup() {
       Auth.login(data.addUser.token);
     } catch (err) {
       console.error(err);
-      // setShowAlert(true);
     }
 
     setSignupFormData({
@@ -160,9 +143,9 @@ export default function Signup() {
         </Button>
       </Form>
       {error && (
-      <div className="my-3 p-3 bg-danger text-white">
-        {error.message}
-      </div>
+        <div className="my-3 p-3 bg-danger text-white">
+          {error.message}
+        </div>
       )}
     </Col>
   )
