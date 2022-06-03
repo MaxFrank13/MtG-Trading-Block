@@ -80,7 +80,7 @@ function Collection() {
                     }
                   `}
                 </style>
-                <Button variant="search" size="lg">
+                <Button type="submit" variant="search" size="lg">
                   Search
                 </Button>
               </>
