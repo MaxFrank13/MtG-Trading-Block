@@ -22,7 +22,7 @@ import TradeBlock from './pages/TradeBlock';
 import MessageInterface from './messages/MessageInterface';
 import Collection from './pages/Collection';
 import Login from './pages/Login';
-
+import Evaluate from './pages/Evaluate';
 // Construct our main GraphQL API endpoint
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -70,6 +70,10 @@ function App() {
               <Route
                 path="/collection"
                 element={<Collection />}
+              />
+              <Route
+                path="/evaluate"
+                element={<Evaluate />}
               />
               <Route
                 path="/login"
