@@ -133,9 +133,9 @@ function Collection() {
                     margin-right: 5%;
                     } 
                     .btn-search:hover {
-                                box-shadow: inset 0px 0px 8px #00ADB5, 0 0 15px #00ADB5;
-                                color: #00ADB5;
-                                }
+                    box-shadow: inset 0px 0px 8px #00ADB5, 0 0 15px #00ADB5;
+                    color: #00ADB5;
+                    }
                   `}
                 </style>
                 <Button type="submit" variant="search" size="lg">
@@ -157,7 +157,7 @@ function Collection() {
               <Col key={card.cardId}>
                 <Card border="dark" bg="dark">
                   {card.imageNormal ? (
-                    <img src={card.imageNormal} alt={`Image of ${card.name}`} variant="top" className="cardImg" />
+                    <img src={card.imageNormal} alt={card.name} variant="top" className="cardImg" />
                   ) : null}
                   <Card.Body>
                     <>
