@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Card, Chat, Message } = require('../models');
+const { User, Card, Chat, Message, TradePost } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -15,14 +15,16 @@ const resolvers = {
     },
     myChats: async (parent, args, context) => {
       const chats =  await Chat.find().populate('users').populate('messages');
-      return chats;
-      // return chats.filter(chat => {
-      //   for (let i = 0; i < chat.users.length; i++) {
-      //     if (chat.users[i]._id == context.user._id) return true;
-      //   }
-      //   return false;
-      // });
 
+      return chats.filter(chat => {
+        for (let i = 0; i < chat.users.length; i++) {
+          if (chat.users[i]._id == context.user._id) return true;
+        }
+        return false;
+      });
+    },
+    getPosts: async (parent, args) => {
+      return await TradePost.find();
     }
   },
 
@@ -105,14 +107,15 @@ const resolvers = {
         content
       });
 
-      const chat = await Chat.findOneAndUpdate(
+      await Chat.findOneAndUpdate(
         { _id: chat_id },
         { $addToSet: { messages: newMessage }},
         { new: true }
       );
 
-      return chat;
-    }
+      return newMessage;
+    },
+
   }
 }
 

@@ -1,14 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import FormInput from './FormInput';
 
-import { useQuery } from '@apollo/client';
-import { GET_CHATS } from '../utils/queries';
-
-export default function InboxInterface({ onChange, handleNewChatSubmit, newChat, setActiveChat, joinRoom, userData }) {
-
-  const { loading, data } = useQuery(GET_CHATS);
-
-  const [chatData, setChatData] = useState(data?.myChats || []);
+export default function InboxInterface({ onChange, handleNewChatSubmit, newChat, setActiveChat, joinRoom, userData, chatData, setChatData }) {
 
   const handleChatClick = (e) => {
     e.stopPropagation()
@@ -18,18 +11,8 @@ export default function InboxInterface({ onChange, handleNewChatSubmit, newChat,
     const currentChat = chatData.filter(chat => chat._id === currentId);
     console.log(...currentChat);
     joinRoom(...currentChat);
-    setActiveChat(...currentChat);
+    setActiveChat(true);
   };
-
-  useEffect(() => {
-
-    const chats = data?.myChats || [];
-
-    console.log(chats);
-
-    setChatData(chats);
-
-  }, [data]);
 
   useEffect(() => {
     if (newChat.users){
@@ -39,11 +22,6 @@ export default function InboxInterface({ onChange, handleNewChatSubmit, newChat,
     }
 
   }, [newChat]);
-
-
-  if (loading) {
-    return <h2>LOADING...</h2>;
-  };
 
   if (!chatData) {
     return (

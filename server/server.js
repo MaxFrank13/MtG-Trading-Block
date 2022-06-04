@@ -28,15 +28,14 @@ io.on('connection', (socket) => {
   // });
 
   socket.on('send_message', (data) => {
-    socket.to(data.room._id).emit('receive_message', data );
+    socket.to(data.chat_id).emit('receive_message', data );
   });
   
 
 
   socket.on('join_room', (data) => {
-    if (data.chatRef.current._id) socket.leave(data.chatRef.current._id);
-    socket.join(data.newRoom);
-    console.log(`joined room ${data.newRoom}`);
+    socket.join(data);
+    console.log(`joined room ${data}`);
   })
 
   socket.on("connect_error", (err) => {

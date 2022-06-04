@@ -39,6 +39,12 @@ const typeDefs = gql`
     content: String!
     createdAt: String!
   }
+
+  type TradePost {
+    user: User
+    createdAt: String!
+    content: String!
+  }
   
   type Auth {
     token: ID!
@@ -49,6 +55,7 @@ const typeDefs = gql`
     me: User
     users: [User]
     myChats: [Chat]
+    getPosts: [TradePost]
   }
 
   type Mutation {

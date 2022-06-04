@@ -21,7 +21,7 @@ function Navigation() {
               {/* <Navbar.Brand className="navOp" href="/profile">Profile</Navbar.Brand>
             <Navbar.Brand className="navOp" href="/collection">Collection</Navbar.Brand> */}
               <Nav className="me-auto">
-              <Nav.Link className="navOp" href="/profile">Profile</Nav.Link>
+              {/* <Nav.Link className="navOp" href="/profile">Profile</Nav.Link> */}
               <Nav.Link className="navOp" href="/collection">Collection</Nav.Link>
               <Nav.Link className="navOp" href="/evaluate">Evaluate Trade</Nav.Link>
               {/* <Nav.Link className="navOp" href="/">Open Trades</Nav.Link> */}
