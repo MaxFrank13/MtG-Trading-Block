@@ -100,13 +100,11 @@ form.signup-form {
   padding: 5%;
 }
 
-.tradeBox{
-  padding-top: 5%;
-}
 .bar{
   background-color: var(--olive);
   margin-left: 2%;
   margin-right: 2%;
+  box-shadow: inset 0px 0px 8px var(--olive), 0 0 15px var(--olive);
 }
 
 .me-2{
@@ -117,7 +115,44 @@ form.signup-form {
   padding-top:5%;
   padding-left:15%;
   padding-right:15%;
+  padding-bottom:5%;
 }
 h4{
   color: var(--lightGray);
+}
+
+.backDropTv{
+  margin: 5%;
+  background-color: var(--black);
+  padding-top: 2%;
+}
+
+
+.cardImg{
+  border-radius: 5%;
+}
+
+.giveH2{
+  color: var(--orange);
+}
+
+.receiveH2{
+  color: var(--blue);
+}
+
+.tradeBox{
+  background-color: var(--black);
+  padding: 2%;
+}
+
+.backDropTradeSearch{
+  margin: 5%;
+  background-color: var(--black);
+  padding: 3%;
+}
+
+.searchBox{
+  background-color: var(--black);
+  padding: 2%;
+  margin-bottom: 3%;
 }
