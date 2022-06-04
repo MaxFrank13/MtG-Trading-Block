@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   Container,
@@ -10,9 +10,23 @@ import {
   Button,
 } from "react-bootstrap";
 
+import { useMutation } from "@apollo/client";
+import { ADD_CARD } from "../utils/mutations";
+
+import Auth from "../utils/auth";
+import { saveCardIds, getSavedCardIds } from "../utils/localStorage";
+
 function Collection() {
   const [searchedCards, setSearchedCards] = useState([]);
   const [searchInput, setSearchInput] = useState('');
+
+  const [savedCardIds, setSavedCardIds] = useState(getSavedCardIds());
+
+  const [addCard, { error }] = useMutation(ADD_CARD);
+
+  useEffect(() => {
+    return () => saveCardIds(savedCardIds);
+  });
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -31,15 +45,40 @@ function Collection() {
       const { data } = await response.json();
 
       const cardData = data.map((card) => ({
-        scryfall_id: card.id,
+        cardId: card.id,
         name: card.name,
-        imageSmall: card.card_faces ? card.card_faces[0].image_uris.small : card.image_uris.small,
-        imageNormal: card.card_faces ? card.card_faces[0].image_uris.normal : card.image_uris.normal,
-        price: card.prices.usd
+        imageSmall: card.card_faces ? card.card_faces[0].image_uris.small : card.image_uris?.small || "",
+        imageNormal: card.card_faces ? card.card_faces[0].image_uris.normal : card.image_uris?.normal || "",
+        price: parseFloat(card.prices.usd)
       }));
 
       setSearchedCards(cardData);
       setSearchInput('');
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleAddCard = async (cardId) => {
+    const cardToAdd = searchedCards.find((card) => card.cardId === cardId);
+    console.log(cardToAdd);
+    const token = Auth.loggedIn() ? Auth.getToken() : null;
+
+    if (!token) {
+      return false;
+    }
+
+    try {
+      const { data } = await addCard({
+        variables: { input: { ...cardToAdd } }
+      })
+
+      if (!data) {
+        throw new Error('something went wrong!');
+      }
+      console.log(data);
+
+      setSavedCardIds([...savedCardIds, cardToAdd.cardId]);
     } catch (err) {
       console.error(err);
     }
@@ -91,20 +130,38 @@ function Collection() {
         <Row xs={1} md={2} lg={3} className="g-4">
           {searchedCards.map((card) => {
             return (
-              <Col key={card.scryfall_id}>
+              <Col key={card.cardId}>
                 <Card>
-                  <Card.Img variant="top" src={card.imageNormal} />
+                  {card.imageNormal ? (
+                    <Card.Img src={card.imageNormal} alt={`Image of ${card.name}`} variant="top" />
+                  ) : null}
                   <Card.Body>
-                    <Card.Title>{card.name}</Card.Title>
-                    <Card.Text>
-                      This is a longer card with supporting text below as a
-                      natural lead-in to additional content. This content is a
-                      little bit longer.
-                    </Card.Text>
-                  </Card.Body>
-                  <Card.Body>
-                    <Card.Link href="#">Card Link</Card.Link>
-                    <Card.Link href="#">Another Link</Card.Link>
+                    <>
+                      <style type="text/css">
+                        {`
+                          .btn-addCard {
+                          background-color: #303841;
+                          color: #00ADB5;
+                          cursor: pointer;
+                          border: 2px solid #00ADB5;
+                          margin-right: 5%;
+                          } 
+                          .btn-addCard:hover {
+                          color: #FF5722;
+                          border: 2px solid #FF5722;
+                          }
+                        `}
+                      </style>
+                      {Auth.loggedIn() && (
+                        <Button
+                          type="submit"
+                          variant="addCard"
+                          size="lg"
+                          onClick={() => handleAddCard(card.cardId)}>
+                            Add to Collection
+                        </Button>
+                      )}
+                    </>
                   </Card.Body>
                 </Card>
               </Col>
@@ -112,6 +169,11 @@ function Collection() {
           })}
         </Row>
       </Container>
+      {error && (
+        <div className="my-3 p-3 bg-danger text-white">
+          {error.message}
+        </div>
+      )}
     </div>
   );
 }

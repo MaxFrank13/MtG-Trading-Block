@@ -6,6 +6,13 @@ export const GET_ME = gql`
       _id
       username
       email
+      binder {
+        cardId
+        name
+        imageNormal
+        imageSmall
+        price
+      }
     }
   }
 `;
@@ -16,7 +23,13 @@ export const GET_USERS = gql`
       _id
       username
       email
-      binder
+      binder {
+        cardId
+        name
+        imageNormal
+        imageSmall
+        price
+      }
     }
   }
 `;

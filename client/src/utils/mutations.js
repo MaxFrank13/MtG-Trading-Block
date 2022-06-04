@@ -24,6 +24,40 @@ export const LOGIN_USER = gql`
   }
 `;
 
+export const ADD_CARD = gql`
+  mutation addCard($input: CardInput) {
+    addCard(input: $input) {
+      _id
+      username
+      email
+      binder {
+        cardId
+        name
+        imageNormal
+        imageSmall
+        price
+      }
+    }
+  }
+`;
+
+export const REMOVE_CARD = gql`
+  mutation removeCard($cardId: ID!) {
+    removeCard(cardId: $cardId) {
+      _id
+      username
+      email
+      binder {
+        cardId
+        name
+        imageNormal
+        imageSmall
+        price
+      }
+    }
+  }
+`;
+
 export const ADD_CHAT = gql`
   mutation addChat($inviteEmail: String!) {
     addChat(inviteEmail: $inviteEmail) {

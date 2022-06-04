@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const cardSchema = new Schema({
-  scryfall_id: {
+  cardId: {
     type: String,
     required: true
   },
@@ -10,16 +10,13 @@ const cardSchema = new Schema({
     required: true
   },
   imageSmall: {
-    type: String,
-    required: true
+    type: String
   },
   imageNormal: {
-    type: String,
-    required: true
+    type: String
   },
   price: {
-    type: Number,
-    required: true
+    type: Number
   }
 });
 

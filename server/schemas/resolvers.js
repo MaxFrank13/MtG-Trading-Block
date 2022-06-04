@@ -11,7 +11,7 @@ const resolvers = {
       throw new AuthenticationError('You must be logged in!');
     },
     users: async (parent, args) => {
-      return await User.find();
+      return await User.find().populate('binder');
     },
     myChats: async (parent, args, context) => {
       const chats =  await Chat.find().populate('users').populate('messages');
@@ -48,6 +48,32 @@ const resolvers = {
       const token = signToken(user);
 
       return { token, user };
+    },
+    addCard: async (parent, { input }, context) => {
+      if (context.user) {
+        const newCard = await Card.create(input);
+
+        const user = await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $addToSet: { binder: newCard } },
+          { new: true }
+        ).populate('binder');
+
+        return user;
+      }
+      throw new AuthenticationError('You must be logged in!');
+    },
+    removeCard: async (parent, { cardId }, context) => {
+      if (context.user) {
+        const user = await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $pull: { binder: { cardId: cardId } } },
+          { new: true }
+        );
+
+        return user;
+      }
+      throw new AuthenticationError('You must be logged in!');
     },
     addChat: async (parent, { inviteEmail }, context) => {
       const current = await User.findOne({ email: context.user.email });
