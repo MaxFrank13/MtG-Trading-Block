@@ -19,7 +19,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Profile from './pages/Profile';
 import TradeBlock from './pages/TradeBlock';
-import MessageInterface from './messages/MessageInterface';
+import Chat from './messages/Chat';
+
 import Collection from './pages/Collection';
 import Login from './pages/Login';
 import Evaluate from './pages/Evaluate';
@@ -84,7 +85,7 @@ function App() {
         </div>
       </Router>
       {chat && (
-        <MessageInterface />
+        <Chat />
       )}
       <button
         onClick={() => setChat(!chat)}
