@@ -1,6 +1,14 @@
 const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
+  input CardInput {
+    cardId: ID!
+    name: String!
+    imageNormal: String
+    imageSmall: String
+    price: Float
+  }
+
   type User {
     _id: ID
     username: String!
@@ -9,10 +17,11 @@ const typeDefs = gql`
   }
 
   type Card {
-    scryfall_id: ID!
+    cardId: ID!
     name: String!
-    imageNormal: String!
-    imageSmall: String!
+    imageNormal: String
+    imageSmall: String
+    price: Float
   }
 
   type Chat {
@@ -52,6 +61,8 @@ const typeDefs = gql`
   type Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
     loginUser(email: String!, password: String!): Auth
+    addCard(input: CardInput): User
+    removeCard(cardId: ID!): User
     addChat(inviteEmail: String!) : Chat
     addMessage(chat_id: ID!, username: String!, createdAt: String!, content: String!) : Message
   }
