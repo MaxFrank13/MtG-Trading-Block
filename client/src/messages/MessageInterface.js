@@ -10,7 +10,7 @@ import { ADD_CHAT, ADD_MESSAGE } from '../utils/mutations';
 // Socket.io client side
 import io from 'socket.io-client';
 
-const socket = io.connect('http://localhost:3001');
+const socket = io.connect();
 
 export default function MessageInterface({userData, loadingUser}) {
 
