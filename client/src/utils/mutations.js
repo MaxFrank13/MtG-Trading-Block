@@ -63,21 +63,33 @@ export const ADD_CHAT = gql`
     addChat(inviteEmail: $inviteEmail) {
       _id
       users {
-        username
         _id
+        username
         email
         binder {
+          cardId
           name
+          imageNormal
+          imageSmall
+          price
         }
       }
+      messages {
+        _id
+        chat_id
+        username
+        content
+        createdAt
+      }
       userCount
+      messageCount
     }
   }
 `;
 
 export const ADD_MESSAGE = gql`
-  mutation Mutation($chat_id: ID!, $createdAt: String!, $content: String!, $username: String!) {
-    addMessage(chat_id: $chat_id, createdAt: $createdAt, content: $content, username: $username) {
+  mutation Mutation($chat_id: ID!, $content: String!, $username: String!) {
+    addMessage(chat_id: $chat_id, content: $content, username: $username) {
       _id
       chat_id
       username

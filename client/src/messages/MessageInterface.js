@@ -3,27 +3,32 @@ import ChatInterface from "./ChatInterface";
 import InboxInterface from "./InboxInterface";
 import './styles.css'
 
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { GET_CHATS } from '../utils/queries';
 import { ADD_CHAT, ADD_MESSAGE } from '../utils/mutations';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMinus, faMessage } from '@fortawesome/free-solid-svg-icons'
 
 // Socket.io client side
 import io from 'socket.io-client';
 
-const socket = io.connect('http://localhost:3001');
+const socket = io.connect();
 
-export default function MessageInterface({userData, loadingUser}) {
+export default function MessageInterface({ userData, loadingUser, setChat }) {
 
-  const [ loadChats, { called, loading, data } ] = useLazyQuery(GET_CHATS);
+  const { loading, data } = useQuery(GET_CHATS, {
+    fetchPolicy: 'cache-and-network',
+  });
 
   const [chatData, setChatData] = useState(data?.myChats || []);
+  const [joinedMainRoom, setJoinedMainRoom] = useState(false);
 
   // Importing the addChat mutation from GQL
   const [addChat, { addChatError }] = useMutation(ADD_CHAT);
-  const [newChat, setNewChat] = useState({});
 
   const [addMessage, { addMessageError }] = useMutation(ADD_MESSAGE);
-  
+
   useEffect(() => {
 
     const chats = data?.myChats || [];
@@ -56,7 +61,6 @@ export default function MessageInterface({userData, loadingUser}) {
       const { data } = await addMessage({
         variables: {
           chat_id: chatRef.current._id,
-          createdAt: Date.now().toString(),
           content: chatInputData,
           username: userData.username,
         }
@@ -80,19 +84,28 @@ export default function MessageInterface({userData, loadingUser}) {
     function modifyChats() {
       return chatData.map(chat => {
         if (chat._id === chatRef.current._id) {
+          if (!chat.messages) {
+            chatRef.current = {
+              ...chat,
+              messages: [newMessage]
+            };
+            return {
+              ...chat,
+              messages: [...chatRef.current.messages]
+            }
+          }
           chatRef.current = {
             ...chat,
-            messages: [ ...chat.messages, newMessage ]
+            messages: [...chat.messages, newMessage]
           };
           return {
             ...chat,
-            messages: [ ...chatRef.current.messages]
+            messages: [...chatRef.current.messages]
           };
         };
         return chat;
       })
     };
-
     const newChats = modifyChats();
 
     console.log(newChats);
@@ -133,7 +146,10 @@ export default function MessageInterface({userData, loadingUser}) {
 
       chatRef.current = data.addChat;
       joinRoom(data.addChat);
-      setNewChat(data.addChat);
+      socket.emit('join_room', data.addChat._id);
+      socket.emit('add_new_chat', { emailInput, chat: data.addChat });
+      console.log()
+      setChatData([...chatData, data.addChat]);
 
     } catch (err) {
       console.error(err);
@@ -145,30 +161,52 @@ export default function MessageInterface({userData, loadingUser}) {
   useEffect(() => {
     socket.on("receive_message", (data) => {
       console.log(data);
+      console.log(chatData);
       setChatData(prev => {
         return prev.map(chat => {
           if (chat._id === data.chat_id) {
-            if (chat.messages.find(item => item._id === data._id)){
+            if (chat.messages.find(item => item._id === data._id)) {
               return chat;
             }
             chatRef.current = {
               ...chat,
-              messages: [ ...chat.messages, data ]
+              messages: [...chat.messages, data]
             };
             return {
               ...chat,
-              messages: [ ...chatRef.current.messages]
+              messages: [...chatRef.current.messages]
             };
           };
           return chat;
         });
       });
     });
+
+    socket.on("receive_new_message", (data) => {
+      console.log(data);
+      console.log(chatData);
+      setChatData(prev => {
+        if (prev.find(chat => chat._id === data._id)) {
+          return prev;
+        };
+        return [
+          ...prev,
+          data
+        ]
+      });
+
+      socket.emit('join_room', data._id);
+    });
+
   }, []);
 
   // Data has not returned yet from GQL
   if (loading || loadingUser) {
-    return <h2>LOADING...</h2>;
+    return (
+      <section className="message-interface">
+        <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+      </section>
+    );
   };
 
   // User is not logged in
@@ -179,14 +217,33 @@ export default function MessageInterface({userData, loadingUser}) {
         sign up or log in!
       </h4>
     );
+  }
+
+  if (!joinedMainRoom) {
+    socket.emit('join_room', userData.email);
+    setJoinedMainRoom(true);
   };
 
   return (
     <section className="message-interface">
-      <div onClick={() => setActiveChat(!activeChat)}>
-        {activeChat && 'invite'}
+      <div className="message-interface-header">
+        <FontAwesomeIcon
+          onClick={() => setChat(false)}
+          size='lg'
+          icon={faMinus}
+          className='minimize-chat'
+          color='#ff5722'
+        />
+        {activeChat && (
+          <FontAwesomeIcon
+            onClick={() => setActiveChat(!activeChat)}
+            icon={faMessage}
+            size='lg'
+            className='back-to-inbox'
+            color='#bdd310'
+          />
+        )}
       </div>
-      <button onClick={() => loadChats()}>loadChats</button>
       {activeChat ? (
         <ChatInterface
           handleMessageSubmit={handleMessageSubmit}
@@ -202,9 +259,7 @@ export default function MessageInterface({userData, loadingUser}) {
             setActiveChat={setActiveChat}
             joinRoom={joinRoom}
             userData={userData}
-            newChat={newChat}
             chatData={chatData}
-            setChatData={setChatData}
           />
           {addChatError && (
             <div className="my-3 p-3 bg-danger text-white">

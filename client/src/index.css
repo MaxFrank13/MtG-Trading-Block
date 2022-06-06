@@ -1,10 +1,17 @@
 :root{
+--slate-25: #CBD2D9;
+--slate-50: #9AA5B1;
+--slate-75: #3E4C59;
 --slate: #303841;
+--lightBlue: #67c2c7;
 --blue: #00ADB5;
 /* --info: #0DCAF0; */
 --lightGray: #EEEEEE;
+--lightOrange: #e6967d;
 --orange: #FF5722;
 --olive: #8B9A46;
+--yellowGreen: #bdd310;
+--chatGreen: #3F9142;
 --black:#212529;
 }
 

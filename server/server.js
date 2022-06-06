@@ -14,7 +14,7 @@ app.use(cors());
 const httpServer = require('http').createServer(app);
 const io = require('socket.io')(httpServer, {
   cors: {
-    origin: 'http://localhost:3000'
+    origin: ['http://localhost:3000', 'https://immense-garden-06811.herokuapp.com']
   },
   allowUpgrades: false
 });
@@ -31,7 +31,9 @@ io.on('connection', (socket) => {
     socket.to(data.chat_id).emit('receive_message', data );
   });
   
-
+  socket.on('add_new_chat', (data) => {
+    socket.to(data.emailInput).emit('receive_new_message', data.chat)
+  });
 
   socket.on('join_room', (data) => {
     socket.join(data);
