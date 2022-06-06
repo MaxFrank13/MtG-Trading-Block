@@ -19,7 +19,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Profile from './pages/Profile';
 import TradeBlock from './pages/TradeBlock';
-import Chat from './messages/Chat';
+import Chat from './messages/ChatWindow';
 
 import Collection from './pages/Collection';
 import Login from './pages/Login';
