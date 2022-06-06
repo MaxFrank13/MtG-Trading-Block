@@ -67,46 +67,50 @@ function App() {
           <div className="container">
             <Routes>
               <Route
-                path="/"
+                path={"/"}
                 element={<TradeBlock />}
               />
               <Route
-                path="/profile"
+                path={"/profile"}
                 element={<Profile />}
               />
               <Route
-                path="/collection"
+                path={"/collection"}
                 element={<Collection />}
               />
               <Route
-                path="/evaluate"
+                path={"/evaluate"}
                 element={<Evaluate />}
               />
               <Route
-                path="/login"
+                path={"/login"}
                 element={<Login />}
+              />
+              <Route
+                path={'*'}
+                element={<h1>404!</h1>}
               />
             </Routes>
           </div>
         </div>
       </Router>
       {chat ? (
-        <Chat 
+        <Chat
           setChat={setChat}
         />
       ) : (
-      <div
-        className='chat-button'
-      >
-        <FontAwesomeIcon
-          onClick={() => setChat(!chat)}
-          className='chat-icon'
-          icon={faMessage}
-          size='3x'
-          color='#3F9142'
-          beat
-        />
-      </div>
+        <div
+          className='chat-button'
+        >
+          <FontAwesomeIcon
+            onClick={() => setChat(!chat)}
+            className='chat-icon'
+            icon={faMessage}
+            size='3x'
+            color='#3F9142'
+            beat
+          />
+        </div>
       )}
     </ApolloProvider>
   );
