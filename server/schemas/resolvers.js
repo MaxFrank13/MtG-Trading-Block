@@ -99,11 +99,10 @@ const resolvers = {
         return newChat;
       }
     },
-    addMessage: async (parent, {chat_id, username, createdAt, content}, context) => {
+    addMessage: async (parent, {chat_id, username, content}, context) => {
       const newMessage = await Message.create({
         chat_id,
         username,
-        createdAt,
         content
       });
 

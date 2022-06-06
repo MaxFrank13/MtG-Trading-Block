@@ -24,6 +24,12 @@ import Chat from './messages/ChatWindow';
 import Collection from './pages/Collection';
 import Login from './pages/Login';
 import Evaluate from './pages/Evaluate';
+
+// React Font Awesome icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMessage } from '@fortawesome/free-solid-svg-icons'
+
+
 // Construct our main GraphQL API endpoint
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -84,15 +90,24 @@ function App() {
           </div>
         </div>
       </Router>
-      {chat && (
-        <Chat />
-      )}
-      <button
-        onClick={() => setChat(!chat)}
+      {chat ? (
+        <Chat 
+          setChat={setChat}
+        />
+      ) : (
+      <div
         className='chat-button'
       >
-        toggle chat
-      </button>
+        <FontAwesomeIcon
+          onClick={() => setChat(!chat)}
+          className='chat-icon'
+          icon={faMessage}
+          size='3x'
+          color='#3F9142'
+          beat
+        />
+      </div>
+      )}
     </ApolloProvider>
   );
 }

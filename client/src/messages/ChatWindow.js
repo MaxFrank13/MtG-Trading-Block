@@ -5,7 +5,7 @@ import MessageInterface from './MessageInterface';
 import { useQuery } from '@apollo/client';
 import { GET_ME } from '../utils/queries';
 
-export default function Chat() {
+export default function Chat({ setChat }) {
 
   // User information being fetched from GQL and set as a state variable
   const { loading, data } = useQuery(GET_ME);
@@ -26,6 +26,7 @@ export default function Chat() {
 
   return (
     <MessageInterface
+      setChat={setChat}
       userData={userData}
       setUserData={setUserData}
       loadingUser={loading}

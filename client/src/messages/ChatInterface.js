@@ -12,25 +12,27 @@ export default function ChatInterface({ handleMessageSubmit, onChange, currentMe
   return (
     <section className='chat-interface'>
       {activeChat.users?.filter(user => user.username !== userData.username).map((filteredUser, i) => (
-        <h3 key={i}>
-          {filteredUser.username}
-        </h3>
+        <div className='chat-interface-header' key={i}>
+          <small>chatting with</small>
+          <h5>
+            {filteredUser.username}
+          </h5>
+        </div>
+
       ))}
       <section className='chat-messages'>
         {activeChat.messages?.map(message => (
           <div
             key={message._id}
             className={userData.username === message.username ? 'chat-me' : 'chat-them'}
+            data-createdAt={message.createdAt}
           >
             <p>
               {message.content}
             </p>
             <small className='chat-info-text'>
               <span>
-                {message.username}
-              </span>
-              <span>
-                {message.createdAt}
+                {userData.username === message.username ? 'me' : message.username}
               </span>
             </small>
           </div>
