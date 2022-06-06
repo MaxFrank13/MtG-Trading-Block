@@ -1,4 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowCircleRight, faArrowUpRightFromSquare, faLongArrowAltRight, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 export default function FormInput({ onSubmit, placeholder, onChange, value }) {
 
@@ -13,7 +16,10 @@ export default function FormInput({ onSubmit, placeholder, onChange, value }) {
       />
 
       <button>
-        send
+        <FontAwesomeIcon
+          icon={faRightFromBracket}
+          size='lg'
+        />
       </button>
     </form>
   )

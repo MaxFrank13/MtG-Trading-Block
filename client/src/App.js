@@ -19,11 +19,17 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Profile from './pages/Profile';
 import TradeBlock from './pages/TradeBlock';
-import Chat from './messages/Chat';
+import Chat from './messages/ChatWindow';
 
 import Collection from './pages/Collection';
 import Login from './pages/Login';
 import Evaluate from './pages/Evaluate';
+
+// React Font Awesome icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMessage } from '@fortawesome/free-solid-svg-icons'
+
+
 // Construct our main GraphQL API endpoint
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -61,38 +67,51 @@ function App() {
           <div className="container">
             <Routes>
               <Route
-                path="/"
+                path={"/"}
                 element={<TradeBlock />}
               />
               <Route
-                path="/profile"
+                path={"/profile"}
                 element={<Profile />}
               />
               <Route
-                path="/collection"
+                path={"/collection"}
                 element={<Collection />}
               />
               <Route
-                path="/evaluate"
+                path={"/evaluate"}
                 element={<Evaluate />}
               />
               <Route
-                path="/login"
+                path={"/login"}
                 element={<Login />}
+              />
+              <Route
+                path={'*'}
+                element={<h1>404!</h1>}
               />
             </Routes>
           </div>
         </div>
       </Router>
-      {chat && (
-        <Chat />
+      {chat ? (
+        <Chat
+          setChat={setChat}
+        />
+      ) : (
+        <div
+          className='chat-button'
+        >
+          <FontAwesomeIcon
+            onClick={() => setChat(!chat)}
+            className='chat-icon'
+            icon={faMessage}
+            size='3x'
+            color='#3F9142'
+            beat
+          />
+        </div>
       )}
-      <button
-        onClick={() => setChat(!chat)}
-        className='chat-button'
-      >
-        toggle chat
-      </button>
     </ApolloProvider>
   );
 }

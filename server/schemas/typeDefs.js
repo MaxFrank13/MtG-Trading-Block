@@ -64,7 +64,7 @@ const typeDefs = gql`
     addCard(input: CardInput): User
     removeCard(cardId: ID!): User
     addChat(inviteEmail: String!) : Chat
-    addMessage(chat_id: ID!, username: String!, createdAt: String!, content: String!) : Message
+    addMessage(chat_id: ID!, username: String!, content: String!) : Message
   }
 `;
 

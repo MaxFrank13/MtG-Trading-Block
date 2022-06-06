@@ -1,10 +1,17 @@
 :root{
+--slate-25: #CBD2D9;
+--slate-50: #9AA5B1;
+--slate-75: #3E4C59;
 --slate: #303841;
+--lightBlue: #67c2c7;
 --blue: #00ADB5;
 /* --info: #0DCAF0; */
 --lightGray: #EEEEEE;
+--lightOrange: #e6967d;
 --orange: #FF5722;
 --olive: #8B9A46;
+--yellowGreen: #bdd310;
+--chatGreen: #3F9142;
 --black:#212529;
 }
 
@@ -69,6 +76,13 @@ h3 {
 
 .search{
   margin-bottom: 5%;
+  padding-left: 15%;
+  padding-right: 15%;
+}
+
+.post{
+  margin-bottom: 5%;
+  padding-top: 5%;
   padding-left: 15%;
   padding-right: 15%;
 }
@@ -148,7 +162,7 @@ h4{
 .backDropTradeSearch{
   margin: 5%;
   background-color: var(--black);
-  padding: 3%;
+  padding-top: 3%;
 }
 
 .searchBox{
