@@ -73,6 +73,13 @@ h3 {
   padding-right: 15%;
 }
 
+.post{
+  margin-bottom: 5%;
+  padding-top: 5%;
+  padding-left: 15%;
+  padding-right: 15%;
+}
+
 
 .postTrade{
   padding-top: 3%;
@@ -148,7 +155,7 @@ h4{
 .backDropTradeSearch{
   margin: 5%;
   background-color: var(--black);
-  padding: 3%;
+  padding-top: 3%;
 }
 
 .searchBox{

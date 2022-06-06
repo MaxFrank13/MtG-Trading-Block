@@ -8,9 +8,11 @@ import {
   Form,
   FormControl,
   Button,
+  InputGroup,
 } from "react-bootstrap";
 
 function TradeBlock() {
+
   return (
     <div className="backDrop text-center">
       <Container fluid="md">
@@ -24,7 +26,7 @@ function TradeBlock() {
             <Form className="d-flex">
               <FormControl
                 type="search"
-                placeholder="Search Available Cards"
+                placeholder="Search Available Collections"
                 className="me-2"
                 aria-label="Search"
               />
@@ -53,78 +55,53 @@ function TradeBlock() {
         </Row>
         <Row>
           <Col>
-            <ListGroup>
-              <ListGroup.Item action variant="secondary">
-                Secondary
-              </ListGroup.Item>
-              <ListGroup.Item action variant="dark">
-                Dark
-              </ListGroup.Item>
-              <ListGroup.Item action variant="secondary">
-                Secondary
-              </ListGroup.Item>
-              <ListGroup.Item action variant="dark">
-                Dark
-              </ListGroup.Item>
-              <ListGroup.Item action variant="secondary">
-                Secondary
-              </ListGroup.Item>
-              <ListGroup.Item action variant="dark">
-                Dark
-              </ListGroup.Item>
-              <ListGroup.Item action variant="secondary">
-                Secondary
-              </ListGroup.Item>
-              <ListGroup.Item action variant="dark">
-                Dark
-              </ListGroup.Item>
-              <ListGroup.Item action variant="secondary">
-                Secondary
-              </ListGroup.Item>
-              <ListGroup.Item action variant="dark">
-                Dark
-              </ListGroup.Item>
-              <ListGroup.Item action variant="secondary">
-                Secondary
-              </ListGroup.Item>
-              <ListGroup.Item action variant="dark">
-                Dark
-              </ListGroup.Item>
-              <ListGroup.Item action variant="secondary">
-                Secondary
-              </ListGroup.Item>
-              <ListGroup.Item action variant="dark">
-                Dark
-              </ListGroup.Item>
-              <ListGroup.Item action variant="secondary">
-                Secondary
-              </ListGroup.Item>
-              <ListGroup.Item action variant="dark">
-                Dark
-              </ListGroup.Item>
-            </ListGroup>
+            <>
+              {[
+                "Test Message One ",
+                "Test Message Two",
+                "Test Message Three",
+              ].map((message) => (
+                <ListGroup>
+                  {/* <ListGroup.Item action variant="secondary">{message}</ListGroup.Item> */}
+                  <ListGroup.Item action variant="dark">
+                    {message}
+                  </ListGroup.Item>
+                </ListGroup>
+              ))}
+            </>
           </Col>
         </Row>
-        <Row className="postTrade">
-          <>
-            <style type="text/css">
-              {`
-                                .btn-newTrade {
+        <Row className="post">
+          <Col>
+            <Form className="d-flex">
+              <FormControl
+                type="text"
+                placeholder="Trade Message"
+                className="me-2"
+                aria-label="Post Trade"
+              />
+              <>
+                <style type="text/css">
+                  {`
+                                .btn-post {
                                 background-color: transparent;
                                 color: #FF5722;
                                 cursor: pointer;
                                 border: 2px solid #FF5722;
+                                margin-right: 1%;
                                 } 
-                                .btn-newTrade:hover {
+                                .btn-post:hover {
                                 box-shadow: inset 0px 0px 8px #FF5722, 0 0 15px #FF5722;
                                 color: #FF5722;
                                 }
                                 `}
-            </style>
-            <Button variant="newTrade" size="lg">
-              Post Trade
-            </Button>
-          </>
+                </style>
+                <Button variant="post" size="lg">
+                  Post
+                </Button>
+              </>
+            </Form>
+          </Col>
         </Row>
       </Container>
     </div>
