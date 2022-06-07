@@ -130,12 +130,12 @@ export default function MessageInterface({ userData, loadingUser, setChat }) {
   const handleNewChatSubmit = async (e) => {
     e.preventDefault();
 
-    const emailInput = e.target[0].value;
+    const username = e.target[0].value;
 
     try {
       const { data } = await addChat({
         variables: {
-          inviteEmail: emailInput
+          username
         }
       });
 
@@ -147,7 +147,7 @@ export default function MessageInterface({ userData, loadingUser, setChat }) {
       chatRef.current = data.addChat;
       joinRoom(data.addChat);
       socket.emit('join_room', data.addChat._id);
-      socket.emit('add_new_chat', { emailInput, chat: data.addChat });
+      socket.emit('add_new_chat', { username, chat: data.addChat });
       console.log()
       setChatData([...chatData, data.addChat]);
 
@@ -263,12 +263,12 @@ export default function MessageInterface({ userData, loadingUser, setChat }) {
           />
           {addChatError && (
             <div className="my-3 p-3 bg-danger text-white">
-              {addChatError.message}
+              Chat error: {addChatError.message}
             </div>
           )}
           {addMessageError && (
             <div className="my-3 p-3 bg-danger text-white">
-              {addMessageError.message}
+              Message error: {addMessageError.message}
             </div>
           )}
         </>

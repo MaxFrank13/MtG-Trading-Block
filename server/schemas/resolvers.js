@@ -65,26 +65,26 @@ const resolvers = {
       }
       throw new AuthenticationError('You must be logged in!');
     },
-    removeCard: async (parent, { cardId }, context) => {
+    removeCard: async (parent, { _id }, context) => {
       if (context.user) {
         const user = await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $pull: { binder: { cardId: cardId } } },
+          { $pull: { binder: _id } },
           { new: true }
-        );
+        ).populate('binder');
 
         return user;
       }
       throw new AuthenticationError('You must be logged in!');
     },
-    addChat: async (parent, { inviteEmail }, context) => {
-      const current = await User.findOne({ email: context.user.email });
+    addChat: async (parent, { username }, context) => {
+      const current = await User.findOne({ username: context.user.username }).populate('binder');
 
       if (!current) {
         throw new AuthenticationError('No current user data. Make sure you are signed in.');
       };
 
-      const invite = await User.findOne({ email: inviteEmail });
+      const invite = await User.findOne({ username }).populate('binder');
 
       if (!invite) {
         throw new AuthenticationError('No user with that email.');
@@ -115,15 +115,19 @@ const resolvers = {
       return newMessage;
     },
     addPost: async (parent, { content }, context) => {
-
-      const user = await User.findOne({ _id: context.user._id }).populate('binder');
-
-      const post = await TradePost.create({
-        user,
-        content
-      });
-
-      return post;
+      
+      if (context.user) {
+        const user = await User.findOne({ _id: context.user._id }).populate('binder');
+        
+        
+        const post = await TradePost.create({
+          user,
+          content
+        });
+        
+        return post;
+      }
+      throw new AuthenticationError('You must be logged in!');
     }
   }
 }

@@ -10,14 +10,16 @@ import {
   Button,
 } from "react-bootstrap";
 
-import { useMutation } from "@apollo/client";
-import { ADD_CARD } from "../utils/mutations";
+import { useMutation, useQuery } from "@apollo/client";
+import { ADD_CARD, REMOVE_CARD } from "../utils/mutations";
+import { GET_ME } from '../utils/queries';
 
 import Auth from "../utils/auth";
-import { saveCardIds, getSavedCardIds } from "../utils/localStorage";
+import { saveCardIds, getSavedCardIds, removeCardId } from "../utils/localStorage";
 
-import { useQuery } from '@apollo/client';
-import { GET_ME } from '../utils/queries';
+
+import { autocomplete } from '../utils/autocomplete';
+import { AutocompleteBox } from "../components/AutocompleteBox";
 
 
 function Collection() {
@@ -25,34 +27,53 @@ function Collection() {
   const { loading, data } = useQuery(GET_ME);
 
   const [userData, setUserData] = useState(data?.me || {});
-
+  
   // useEffect that fires as soon as the data comes in from the GQL request
   // sets userData to the response from the request
   useEffect(() => {
-
+    
     const user = data?.me || {};
-
+    
     console.log(user);
-
+    
     setUserData(user);
-
+    
   }, [data]);
-
-
+  
+  
   const [searchedCards, setSearchedCards] = useState([]);
+  const [autoCompleteArray, setAutoCompleteArray] = useState([]);
+  const [savedCardIds, setSavedCardIds] = useState(getSavedCardIds());
+  
   const [searchInput, setSearchInput] = useState('');
   const [cardNotFound, setCardNotFound] = useState(false);
+  const [triggerSubmit, setTriggerSubmit] = useState(false);
 
-  const [savedCardIds, setSavedCardIds] = useState(getSavedCardIds());
-
-  const [addCard, { error }] = useMutation(ADD_CARD);
-
+  const [updatedCollectionAlert, setUpdatedCollectionAlert] = useState(false);
+  
+  
+  const [addCard, addCardData] = useMutation(ADD_CARD);
+  const [removeCard, removeCardData] = useMutation(REMOVE_CARD);
+  
   useEffect(() => {
     return () => saveCardIds(savedCardIds);
   });
 
+  useEffect(() => {
+    if (triggerSubmit) {
+      handleFormSubmit();
+      setTriggerSubmit(false);
+    }
+  }, [triggerSubmit]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setUpdatedCollectionAlert(false);
+    }, 1500)
+  }, [userData])
+
   const handleFormSubmit = async (event) => {
-    event.preventDefault();
+    event?.preventDefault();
 
     if (!searchInput) {
       return false;
@@ -71,13 +92,14 @@ function Collection() {
       const cardData = data.map((card) => ({
         cardId: card.id,
         name: card.name,
-        imageSmall: card.card_faces ? card.card_faces[0].image_uris.small : card.image_uris?.small || "",
-        imageNormal: card.card_faces ? card.card_faces[0].image_uris.normal : card.image_uris?.normal || "",
+        imageSmall: card.card_faces ? card.card_faces[0].image_uris?.small : card.image_uris?.small || "",
+        imageNormal: card.card_faces ? card.card_faces[0].image_uris?.normal : card.image_uris?.normal || "",
         price: parseFloat(card.prices.usd)
       }));
 
       setSearchedCards(cardData);
       setSearchInput('');
+      setAutoCompleteArray([]);
     } catch (err) {
       console.error(err);
     }
@@ -101,10 +123,42 @@ function Collection() {
         throw new Error('something went wrong!');
       }
       console.log(data);
-
-      setSavedCardIds([...savedCardIds, cardToAdd.cardId]);
+      setUpdatedCollectionAlert(true);
+      setSavedCardIds([...savedCardIds, cardToAdd._id]);
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const handleRemoveCard = async (e) => {
+    const _id = e.target.dataset.id;
+    console.log(_id);
+    try {
+      const { data } = await removeCard({
+        variables: {
+          _id: _id,
+        }
+      });
+
+      if (!data) {
+        throw new Error('Unable to remove card');
+      };
+      removeCardId(_id);
+      console.log(data);
+      return data;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  const handleSearchInput = async (e) => {
+    const queryString = e.target.value;
+    setSearchInput(queryString);
+
+    if (queryString.length > 2) {
+      console.log('here');
+      const data = await autocomplete(queryString);
+      setAutoCompleteArray(data);
     }
   };
 
@@ -116,19 +170,26 @@ function Collection() {
             <h3>My Collection</h3>
           </Col>
         </Row>
-        
+        {updatedCollectionAlert && (
+          <h4 className="updated-collection-alert">updated collection!</h4>
+        )}
+
         <Row xs={1} md={2} lg={3} className="g-4">
-          {userData?.binder?.map((card) => {
-            return (
-              <Col key={card.cardId}>
-                <Card border="dark" bg="dark">
-                  {card.imageNormal ? (
-                    <img src={card.imageNormal} alt={`Image of ${card.name}`} variant="top" className="cardImg" />
-                  ) : null}
-                  <Card.Body>
-                    <>
-                      <style type="text/css">
-                        {`
+          {loading ? (
+            <h1 className="mx-auto">loading collection...</h1>
+          ) : (
+            <>
+              {userData?.binder?.map((card) => {
+                return (
+                  <Col key={card._id}>
+                    <Card border="dark" bg="dark">
+                      {card.imageNormal ? (
+                        <img src={card.imageNormal} alt={`Image of ${card.name}`} variant="top" className="cardImg" />
+                      ) : null}
+                      <Card.Body>
+                        <>
+                          <style type="text/css">
+                            {`
                           .btn-removeCard {
                           background-color: #303841;
                           color: #FF5722;
@@ -141,23 +202,27 @@ function Collection() {
                           box-shadow: inset 0px 0px 8px #FF5722, 0 0 15px #FF5722;
                           }
                         `}
-                      </style>
-                      {Auth.loggedIn() && (
-                        <Button
-                          type="submit"
-                          variant="removeCard"
-                          size="sm"
-                          // onClick={() => handleAddCard(card.cardId)}
-                          >
-                            Remove
-                        </Button>
-                      )}
-                    </>
-                  </Card.Body>
-                </Card>
-              </Col>
-            );
-          })}
+                          </style>
+                          {Auth.loggedIn() && (
+                            <Button
+                              type="submit"
+                              variant="removeCard"
+                              size="sm"
+                              data-id={card._id}
+                              onClick={handleRemoveCard}
+                            >
+                              Remove
+                            </Button>
+                          )}
+                        </>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                );
+              })}
+            </>
+          )}
+
         </Row>
 
         <Row className="collectionSearch">
@@ -165,7 +230,7 @@ function Collection() {
             <Form className="d-flex" onSubmit={handleFormSubmit}>
               <FormControl
                 value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
+                onChange={handleSearchInput}
                 type="search"
                 placeholder="Find Cards To Add"
                 className="me-2"
@@ -194,10 +259,15 @@ function Collection() {
             </Form>
             {cardNotFound && (
               <div className="my-3 p-3 bg-danger text-white">
-              Card Not Found
-            </div>
+                Card Not Found
+              </div>
             )}
           </Col>
+          <AutocompleteBox
+            cards={autoCompleteArray}
+            setSearchInput={setSearchInput}
+            setTriggerSubmit={setTriggerSubmit}
+          />
         </Row>
 
         <Row xs={1} md={2} lg={3} className="g-4">
@@ -231,7 +301,7 @@ function Collection() {
                           variant="addCard"
                           size="sm"
                           onClick={() => handleAddCard(card.cardId)}>
-                            Add to Collection
+                          Add to Collection
                         </Button>
                       )}
                     </>
@@ -242,9 +312,15 @@ function Collection() {
           })}
         </Row>
       </Container>
-      {error && (
+
+      {addCardData.error && (
         <div className="my-3 p-3 bg-danger text-white">
-          {error.message}
+          {addCardData.error.message}
+        </div>
+      )}
+      {removeCardData.error && (
+        <div className="my-3 p-3 bg-danger text-white">
+          {removeCardData.error.message}
         </div>
       )}
     </div>

@@ -23,6 +23,7 @@ const typeDefs = gql`
   }
 
   type Card {
+    _id: ID!
     cardId: ID!
     name: String!
     imageNormal: String
@@ -69,8 +70,8 @@ const typeDefs = gql`
     addUser(username: String!, email: String!, password: String!): Auth
     loginUser(email: String!, password: String!): Auth
     addCard(input: CardInput): User
-    removeCard(cardId: ID!): User
-    addChat(inviteEmail: String!) : Chat
+    removeCard(_id: ID!): User
+    addChat(username: String!) : Chat
     addMessage(chat_id: ID!, username: String!, content: String!) : Message
     addPost(content: String!) : TradePost
   }

@@ -42,25 +42,21 @@ export const ADD_CARD = gql`
 `;
 
 export const REMOVE_CARD = gql`
-  mutation removeCard($cardId: ID!) {
-    removeCard(cardId: $cardId) {
+  mutation removeCard($_id: ID!) {
+    removeCard(_id: $_id) {
       _id
       username
       email
       binder {
-        cardId
-        name
-        imageNormal
-        imageSmall
-        price
+        _id
       }
     }
   }
 `;
 
 export const ADD_CHAT = gql`
-  mutation addChat($inviteEmail: String!) {
-    addChat(inviteEmail: $inviteEmail) {
+  mutation addChat($username: String!) {
+    addChat(username: $username) {
       _id
       users {
         _id
