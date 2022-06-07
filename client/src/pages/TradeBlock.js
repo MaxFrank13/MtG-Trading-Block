@@ -33,18 +33,18 @@ function TradeBlock() {
               <>
                 <style type="text/css">
                   {`
-                                .btn-search {
-                                background-color: transparent;
-                                color: #00ADB5;
-                                cursor: pointer;
-                                border: 2px solid #00ADB5;
-                                margin-right: 5%;
-                                } 
-                                .btn-search:hover {
-                                box-shadow: inset 0px 0px 8px #00ADB5, 0 0 15px #00ADB5;
-                                color: #00ADB5;
-                                }
-                                `}
+                    .btn-search {
+                    background-color: transparent;
+                    color: #00ADB5;
+                    cursor: pointer;
+                    border: 2px solid #00ADB5;
+                    margin-right: 5%;
+                    } 
+                    .btn-search:hover {
+                    box-shadow: inset 0px 0px 8px #00ADB5, 0 0 15px #00ADB5;
+                    color: #00ADB5;
+                    }
+                  `}
                 </style>
                 <Button variant="search" size="lg">
                   Search
@@ -83,18 +83,18 @@ function TradeBlock() {
               <>
                 <style type="text/css">
                   {`
-                                .btn-post {
-                                background-color: transparent;
-                                color: #FF5722;
-                                cursor: pointer;
-                                border: 2px solid #FF5722;
-                                margin-right: 1%;
-                                } 
-                                .btn-post:hover {
-                                box-shadow: inset 0px 0px 8px #FF5722, 0 0 15px #FF5722;
-                                color: #FF5722;
-                                }
-                                `}
+                    .btn-post {
+                    background-color: transparent;
+                    color: #FF5722;
+                    cursor: pointer;
+                    border: 2px solid #FF5722;
+                    margin-right: 1%;
+                    } 
+                    .btn-post:hover {
+                    box-shadow: inset 0px 0px 8px #FF5722, 0 0 15px #FF5722;
+                    color: #FF5722;
+                    }
+                  `}
                 </style>
                 <Button variant="post" size="lg">
                   Post

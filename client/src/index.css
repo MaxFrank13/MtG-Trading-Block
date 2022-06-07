@@ -131,6 +131,7 @@ form.signup-form {
   padding-right:15%;
   padding-bottom:5%;
 }
+
 h4{
   color: var(--lightGray);
 }
@@ -162,11 +163,22 @@ h4{
 .backDropTradeSearch{
   margin: 5%;
   background-color: var(--black);
-  padding-top: 3%;
+  padding: 3%;
 }
 
 .searchBox{
   background-color: var(--black);
   padding: 2%;
   margin-bottom: 3%;
+}
+
+.card-price{
+  color: var(--lightGray);
+  font-size: 1.5rem;
+}
+
+.cards-total{
+  color: var(--lightGray);
+  font-size: 2.4rem;
+  position: sticky;
 }
