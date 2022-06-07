@@ -71,8 +71,8 @@ function Collection() {
       const cardData = data.map((card) => ({
         cardId: card.id,
         name: card.name,
-        imageSmall: card.card_faces ? card.card_faces[0].image_uris.small : card.image_uris?.small || "",
-        imageNormal: card.card_faces ? card.card_faces[0].image_uris.normal : card.image_uris?.normal || "",
+        imageSmall: card.card_faces ? card.card_faces[0].image_uris?.small : card.image_uris?.small || "",
+        imageNormal: card.card_faces ? card.card_faces[0].image_uris?.normal : card.image_uris?.normal || "",
         price: parseFloat(card.prices.usd)
       }));
 
@@ -85,7 +85,6 @@ function Collection() {
 
   const handleAddCard = async (cardId) => {
     const cardToAdd = searchedCards.find((card) => card.cardId === cardId);
-    console.log(cardToAdd);
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
@@ -100,7 +99,6 @@ function Collection() {
       if (!data) {
         throw new Error('something went wrong!');
       }
-      console.log(data);
 
       setSavedCardIds([...savedCardIds, cardToAdd.cardId]);
     } catch (err) {
@@ -182,9 +180,9 @@ function Collection() {
                     margin-right: 5%;
                     } 
                     .btn-search:hover {
-                                box-shadow: inset 0px 0px 8px #00ADB5, 0 0 15px #00ADB5;
-                                color: #00ADB5;
-                                }
+                    box-shadow: inset 0px 0px 8px #00ADB5, 0 0 15px #00ADB5;
+                    color: #00ADB5;
+                    }
                   `}
                 </style>
                 <Button type="submit" variant="search" size="lg">
@@ -194,8 +192,8 @@ function Collection() {
             </Form>
             {cardNotFound && (
               <div className="my-3 p-3 bg-danger text-white">
-              Card Not Found
-            </div>
+                Card Not Found
+              </div>
             )}
           </Col>
         </Row>
@@ -206,7 +204,7 @@ function Collection() {
               <Col key={card.cardId}>
                 <Card border="dark" bg="dark">
                   {card.imageNormal ? (
-                    <img src={card.imageNormal} alt={`Image of ${card.name}`} variant="top" className="cardImg" />
+                    <img src={card.imageNormal} alt={card.name} variant="top" className="cardImg" />
                   ) : null}
                   <Card.Body>
                     <>
@@ -217,7 +215,7 @@ function Collection() {
                           color: #00ADB5;
                           cursor: pointer;
                           border: 2px solid #00ADB5;
-                          } 
+                          }
                           .btn-addCard:hover {
                           color: #00ADB5;
                           border: 2px solid #00ADB5;
