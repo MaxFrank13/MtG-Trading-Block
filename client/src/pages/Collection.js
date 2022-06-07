@@ -16,7 +16,29 @@ import { ADD_CARD } from "../utils/mutations";
 import Auth from "../utils/auth";
 import { saveCardIds, getSavedCardIds } from "../utils/localStorage";
 
+import { useQuery } from '@apollo/client';
+import { GET_ME } from '../utils/queries';
+
+
 function Collection() {
+
+  const { loading, data } = useQuery(GET_ME);
+
+  const [userData, setUserData] = useState(data?.me || {});
+
+  // useEffect that fires as soon as the data comes in from the GQL request
+  // sets userData to the response from the request
+  useEffect(() => {
+
+    const user = data?.me || {};
+
+    console.log(user);
+
+    setUserData(user);
+
+  }, [data]);
+
+
   const [searchedCards, setSearchedCards] = useState([]);
   const [searchInput, setSearchInput] = useState('');
   const [cardNotFound, setCardNotFound] = useState(false);
@@ -94,31 +116,58 @@ function Collection() {
             <h3>My Collection</h3>
           </Col>
         </Row>
-        <Row xs={2} lg={3} className="g-4 searchBox text-center">
-            {Array.from({ length: 6 }).map((_, idx) => (
-              <Col>
-                <Card>
-                  <Card.Img variant="top" src="holder.js/100px160" />
+        
+        <Row xs={1} md={2} lg={3} className="g-4">
+          {userData?.binder?.map((card) => {
+            return (
+              <Col key={card.cardId}>
+                <Card border="dark" bg="dark">
+                  {card.imageNormal ? (
+                    <img src={card.imageNormal} alt={`Image of ${card.name}`} variant="top" className="cardImg" />
+                  ) : null}
                   <Card.Body>
-                    <Card.Title>Card title</Card.Title>
-                    <Card.Text>
-                      This is a longer card with supporting text below as a
-                      natural lead-in to additional content. This content is a
-                      little bit longer.
-                    </Card.Text>
+                    <>
+                      <style type="text/css">
+                        {`
+                          .btn-removeCard {
+                          background-color: #303841;
+                          color: #FF5722;
+                          cursor: pointer;
+                          border: 2px solid #FF5722;
+                          } 
+                          .btn-removeCard:hover {
+                          color: #FF5722;
+                          border: 2px solid #FF5722;
+                          box-shadow: inset 0px 0px 8px #FF5722, 0 0 15px #FF5722;
+                          }
+                        `}
+                      </style>
+                      {Auth.loggedIn() && (
+                        <Button
+                          type="submit"
+                          variant="removeCard"
+                          size="sm"
+                          // onClick={() => handleAddCard(card.cardId)}
+                          >
+                            Remove
+                        </Button>
+                      )}
+                    </>
                   </Card.Body>
                 </Card>
               </Col>
-            ))}
-          </Row>
-        <Row className="search">
+            );
+          })}
+        </Row>
+
+        <Row className="collectionSearch">
           <Col>
             <Form className="d-flex" onSubmit={handleFormSubmit}>
               <FormControl
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 type="search"
-                placeholder="Search Cards"
+                placeholder="Find Cards To Add"
                 className="me-2"
                 aria-label="Search"
               />
@@ -168,11 +217,11 @@ function Collection() {
                           color: #00ADB5;
                           cursor: pointer;
                           border: 2px solid #00ADB5;
-                          margin-right: 5%;
                           } 
                           .btn-addCard:hover {
-                          color: #FF5722;
-                          border: 2px solid #FF5722;
+                          color: #00ADB5;
+                          border: 2px solid #00ADB5;
+                          box-shadow: inset 0px 0px 8px #00ADB5, 0 0 15px #00ADB5;
                           }
                         `}
                       </style>
@@ -180,7 +229,7 @@ function Collection() {
                         <Button
                           type="submit"
                           variant="addCard"
-                          size="lg"
+                          size="sm"
                           onClick={() => handleAddCard(card.cardId)}>
                             Add to Collection
                         </Button>
