@@ -87,7 +87,7 @@ function Evaluate() {
         </Col>
 
         <Col>
-        <h2 className="text-center receiveH2">Cards ToReceive</h2>
+        <h2 className="text-center receiveH2">Cards To Receive</h2>
           <Row className="valRow">
             <Col className="backDropTv text-center">
               <h4>Total Value $$</h4>
@@ -177,7 +177,7 @@ function Evaluate() {
                   color: #FF5722;
                   cursor: pointer;
                   border: 2px solid #FF5722;
-                  margin-right: 5%;
+                  margin-right: 2%;
                   } 
                   .btn-addGive:hover {
                   color: #FF5722;
@@ -199,7 +199,7 @@ function Evaluate() {
                   color: #00ADB5;
                   cursor: pointer;
                   border: 2px solid #00ADB5;
-                  margin-right: 5%;
+                  margin-left: 2%;
                   } 
                   .btn-addReceive:hover {
                   color: #00ADB5;
