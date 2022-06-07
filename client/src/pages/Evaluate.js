@@ -4,8 +4,6 @@ import {
   Container,
   Row,
   Col,
-  Stack,
-  ListGroup,
   Form,
   FormControl,
   Button,
@@ -43,9 +41,9 @@ function Evaluate() {
       const cardData = data.map((card) => ({
         cardId: card.id,
         name: card.name,
-        imageSmall: card.card_faces ? card.card_faces[0].image_uris?.small : card.image_uris.small,
-        imageNormal: card.card_faces ? card.card_faces[0].image_uris?.normal : card.image_uris.normal,
-        price: parseFloat(card.prices.usd),
+        imageSmall: card.card_faces ? card.card_faces[0].image_uris?.small : card.image_uris?.small || "",
+        imageNormal: card.card_faces ? card.card_faces[0].image_uris?.normal : card.image_uris?.normal || "",
+        price: parseFloat(card.prices.usd) ||0
       }));
 
       setSearchedCards(cardData);
@@ -55,25 +53,25 @@ function Evaluate() {
     }
   };
 
-  const handleCardsToGive = (e) => {
+  const handleAddCardToGive = (e) => {
     const card = {...JSON.parse(e.target.dataset.card), evaluatorId: uuidv4()};
     setCardsToGive([...cardsToGive, card]);
     setCardsToGiveTotal(cardsToGiveTotal + card.price);
   };
 
-  const handleCardsToReceive = (e) => {
+  const handleAddCardToReceive = (e) => {
     const card = {...JSON.parse(e.target.dataset.card), evaluatorId: uuidv4()};
     setCardsToReceive([...cardsToReceive, card]);
     setCardsToReceiveTotal(cardsToReceiveTotal + card.price);
   };
 
   const handleRemoveCardToGive = (e) => {
-    console.log(e);
+    setCardsToGiveTotal(cardsToGiveTotal - e.target.dataset.price);
     setCardsToGive(cardsToGive.filter(card => card.evaluatorId !== e.target.dataset.id));
   };
 
   const handleRemoveCardToReceive = (e) => {
-    console.log(e);
+    setCardsToReceiveTotal(cardsToReceiveTotal - e.target.dataset.price);
     setCardsToReceive(cardsToReceive.filter(card => card.evaluatorId !== e.target.dataset.id));
   };
 
@@ -121,6 +119,7 @@ function Evaluate() {
                         </style>
                         <Button type="submit" variant="addRemove" size="md"
                         data-id={card.evaluatorId}
+                        data-price={card.price}
                         onClick={handleRemoveCardToGive}>
                           Remove
                         </Button>
@@ -172,6 +171,7 @@ function Evaluate() {
                         </style>
                         <Button type="submit" variant="addRemove" size="md"
                         data-id={card.evaluatorId}
+                        data-price={card.price}
                         onClick={handleRemoveCardToReceive}>
                           Remove
                         </Button>
@@ -260,7 +260,7 @@ function Evaluate() {
                           }
                         `}
                       </style>
-                      <Button data-card={JSON.stringify(card)} type="submit" variant="addGive" size="md" onClick={handleCardsToGive}>
+                      <Button data-card={JSON.stringify(card)} type="submit" variant="addGive" size="md" onClick={handleAddCardToGive}>
                         Give Card
                       </Button>
                     </>
@@ -282,7 +282,7 @@ function Evaluate() {
                           }
                         `}
                       </style>
-                      <Button data-card={JSON.stringify(card)} type="submit" variant="addReceive" size="md" onClick={handleCardsToReceive}>
+                      <Button data-card={JSON.stringify(card)} type="submit" variant="addReceive" size="md" onClick={handleAddCardToReceive}>
                         Receive Card
                       </Button>
                     </>

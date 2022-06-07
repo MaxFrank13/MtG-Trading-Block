@@ -94,7 +94,7 @@ function Collection() {
         name: card.name,
         imageSmall: card.card_faces ? card.card_faces[0].image_uris?.small : card.image_uris?.small || "",
         imageNormal: card.card_faces ? card.card_faces[0].image_uris?.normal : card.image_uris?.normal || "",
-        price: parseFloat(card.prices.usd)
+        price: parseFloat(card.prices.usd) || 0
       }));
 
       setSearchedCards(cardData);
@@ -183,7 +183,7 @@ function Collection() {
                   <Col key={card._id}>
                     <Card border="dark" bg="dark">
                       {card.imageNormal ? (
-                        <img src={card.imageNormal} alt={`Image of ${card.name}`} variant="top" className="cardImg" />
+                        <img src={card.imageNormal} alt={card.name} variant="top" className="cardImg" />
                       ) : null}
                       <Card.Body>
                         <>
