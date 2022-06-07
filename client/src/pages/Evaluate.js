@@ -66,13 +66,11 @@ function Evaluate() {
   };
 
   const handleRemoveCardToGive = (e) => {
-    console.log(e);
     setCardsToGiveTotal(cardsToGiveTotal - e.target.dataset.price);
     setCardsToGive(cardsToGive.filter(card => card.evaluatorId !== e.target.dataset.id));
   };
 
   const handleRemoveCardToReceive = (e) => {
-    console.log(e);
     setCardsToReceiveTotal(cardsToReceiveTotal - e.target.dataset.price);
     setCardsToReceive(cardsToReceive.filter(card => card.evaluatorId !== e.target.dataset.id));
   };
