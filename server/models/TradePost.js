@@ -7,7 +7,8 @@ const tradePostSchema = new Schema(
       ref: 'User',
     },
     createdAt: {
-      type: String,
+      type: Date,
+      default: Date.now(),
       get: date => date.toLocaleString()
     },
     content: {
