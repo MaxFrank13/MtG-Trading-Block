@@ -88,12 +88,26 @@ export const ADD_CHAT = gql`
 `;
 
 export const ADD_MESSAGE = gql`
-  mutation Mutation($chat_id: ID!, $content: String!, $username: String!) {
+  mutation addMessage($chat_id: ID!, $content: String!, $username: String!) {
     addMessage(chat_id: $chat_id, content: $content, username: $username) {
       _id
       chat_id
       username
       content
+      createdAt
+    }
+  }
+`;
+
+export const ADD_POST = gql`
+  mutation addPost($content: String!) {
+    addPost(content: $content) {
+      _id
+      content
+      user {
+        username
+        email
+      }
       createdAt
     }
   }

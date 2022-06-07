@@ -55,3 +55,18 @@ export const GET_CHATS = gql`
     }
   }
 `;
+
+export const GET_POSTS = gql`
+  query getPosts {
+    getPosts {
+      _id
+      createdAt
+      content
+      user {
+        _id
+        username
+        email
+      }
+    }
+  }
+`
