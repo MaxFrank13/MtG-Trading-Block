@@ -78,6 +78,14 @@ h3 {
   margin-bottom: 5%;
   padding-left: 15%;
   padding-right: 15%;
+
+}
+.collectionSearch{
+  margin-bottom: 5%;
+  padding-top: 5%;
+  padding-left: 15%;
+  padding-right: 15%;
+
 }
 
 .post{
@@ -92,6 +100,40 @@ h3 {
   padding-top: 3%;
   padding-left: 30%;
   padding-right: 30%;
+}
+
+div.trade-post {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--slate-50);
+  color: var(--black);
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+div.trade-post:nth-child(even) {
+  background: var(--slate-25);
+}
+
+div.trade-post h5 {
+  width: 75px;
+  font-size: 0.875rem;
+  word-break: break-all;
+}
+
+div.trade-post p {
+  flex-basis: 75%;
+  box-shadow: -1px 0px 0px 0px, 1px 0px 0px 0px;
+  margin: 0;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+div.trade-post small {
+  width: 75px;
+  font-size: 0.625rem;
+  padding: 0 0.25rem;
+  flex-basis: 8%;
 }
 
 /* ==== Login/Sign-up Forms ==== */

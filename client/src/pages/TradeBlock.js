@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   Container,
@@ -11,7 +11,55 @@ import {
   InputGroup,
 } from "react-bootstrap";
 
+import { useMutation, useQuery } from "@apollo/client";
+import { ADD_POST } from "../utils/mutations";
+import { GET_POSTS } from "../utils/queries";
+
 function TradeBlock() {
+
+  // User information being fetched from GQL and set as a state variable
+  const { loading, data } = useQuery(GET_POSTS);
+
+  const [postData, setPostData] = useState(data?.getPosts || []);
+
+  // useEffect that fires as soon as the data comes in from the GQL request
+  // sets userData to the response from the request
+  useEffect(() => {
+
+    const posts = data?.getPosts || [];
+
+    console.log(posts);
+
+    setPostData(posts);
+
+  }, [data]);
+
+  const [tradePostInputValue, setTradePostInputValue] = useState('');
+
+  const [addPost, { error }] = useMutation(ADD_POST);
+
+  const handleInputChange = (e) => {
+    setTradePostInputValue(e.target.value);
+  };
+
+  const handlePostAdd = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await addPost({
+        variables: { 
+          content: tradePostInputValue
+        }
+      });
+
+      if (!data) {
+        throw new Error('something went wrong!');
+      }
+      console.log(data);
+      return data;
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="backDrop text-center">
@@ -56,29 +104,29 @@ function TradeBlock() {
         <Row>
           <Col>
             <>
-              {[
-                "Test Message One ",
-                "Test Message Two",
-                "Test Message Three",
-              ].map((message) => (
-                <ListGroup>
-                  {/* <ListGroup.Item action variant="secondary">{message}</ListGroup.Item> */}
-                  <ListGroup.Item action variant="dark">
-                    {message}
-                  </ListGroup.Item>
-                </ListGroup>
+              {postData?.map(post => (
+                <div className="trade-post">
+                  <h5>{post.user.username}</h5>
+                  <p>{post.content}</p>
+                  <small>{post.createdAt}</small>
+                </div>
               ))}
             </>
           </Col>
         </Row>
         <Row className="post">
           <Col>
-            <Form className="d-flex">
+            <Form 
+              onSubmit={handlePostAdd} 
+              className="d-flex"
+            >
               <FormControl
                 type="text"
                 placeholder="Trade Message"
                 className="me-2"
                 aria-label="Post Trade"
+                onChange={handleInputChange}
+                value={tradePostInputValue}
               />
               <>
                 <style type="text/css">
@@ -96,7 +144,11 @@ function TradeBlock() {
                     }
                   `}
                 </style>
-                <Button variant="post" size="lg">
+                <Button 
+                  variant="post" 
+                  size="lg"
+                  type="submit"
+                >
                   Post
                 </Button>
               </>
@@ -104,6 +156,11 @@ function TradeBlock() {
           </Col>
         </Row>
       </Container>
+      {error && (
+        <div className="my-3 p-3 bg-danger text-white">
+          {error.message}
+        </div>
+      )}
     </div>
   );
 }

@@ -9,6 +9,12 @@ const typeDefs = gql`
     price: Float
   }
 
+  input UserInput {
+    _id: ID!
+    username: String!
+    email: String!
+  }
+
   type User {
     _id: ID
     username: String!
@@ -41,6 +47,7 @@ const typeDefs = gql`
   }
 
   type TradePost {
+    _id: ID!
     user: User
     createdAt: String!
     content: String!
@@ -65,6 +72,7 @@ const typeDefs = gql`
     removeCard(cardId: ID!): User
     addChat(inviteEmail: String!) : Chat
     addMessage(chat_id: ID!, username: String!, content: String!) : Message
+    addPost(content: String!) : TradePost
   }
 `;
 

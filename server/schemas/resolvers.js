@@ -24,7 +24,7 @@ const resolvers = {
       });
     },
     getPosts: async (parent, args) => {
-      return await TradePost.find();
+      return await TradePost.find().populate('user');
     }
   },
 
@@ -114,7 +114,17 @@ const resolvers = {
 
       return newMessage;
     },
+    addPost: async (parent, { content }, context) => {
 
+      const user = await User.findOne({ _id: context.user._id }).populate('binder');
+
+      const post = await TradePost.create({
+        user,
+        content
+      });
+
+      return post;
+    }
   }
 }
 
