@@ -7,6 +7,7 @@ export const GET_ME = gql`
       username
       email
       binder {
+        _id
         cardId
         name
         imageNormal
@@ -24,6 +25,7 @@ export const GET_USERS = gql`
       username
       email
       binder {
+        _id
         cardId
         name
         imageNormal

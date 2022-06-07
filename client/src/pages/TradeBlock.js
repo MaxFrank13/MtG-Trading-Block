@@ -35,6 +35,16 @@ function TradeBlock() {
   }, [data]);
 
   const [tradePostInputValue, setTradePostInputValue] = useState('');
+  const [copyName, setCopyName] = useState('');
+  const [copyAlert, setCopyAlert] = useState(false);
+
+  useEffect(() => {
+    navigator.clipboard.writeText(copyName);
+    setCopyAlert(true);
+    setTimeout(() => {
+      setCopyAlert(false);
+    }, 1500)
+  }, [copyName])
 
   const [addPost, { error }] = useMutation(ADD_POST);
 
@@ -46,7 +56,7 @@ function TradeBlock() {
     e.preventDefault();
     try {
       const { data } = await addPost({
-        variables: { 
+        variables: {
           content: tradePostInputValue
         }
       });
@@ -55,11 +65,17 @@ function TradeBlock() {
         throw new Error('something went wrong!');
       }
       console.log(data);
+
+      setPostData([...postData, data.addPost])
       return data;
     } catch (err) {
       console.error(err);
     }
   };
+
+  const handleNameClick = (e) => {
+    setCopyName(e.target.dataset.email);
+  }
 
   return (
     <div className="backDrop text-center">
@@ -101,23 +117,38 @@ function TradeBlock() {
             </Form>
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <>
-              {postData?.map(post => (
-                <div className="trade-post">
-                  <h5>{post.user.username}</h5>
-                  <p>{post.content}</p>
-                  <small>{post.createdAt}</small>
-                </div>
-              ))}
-            </>
-          </Col>
-        </Row>
+
+        {loading ? (
+          <h3>Loading posts...</h3>
+        ) : (
+          <Row>
+            <Col>
+              <section className="trade-block">
+                {copyAlert && copyName && (
+                  <h4 className="copy-alert">Copied {copyName} to clipboard!</h4>
+                )}
+                <section>
+                  {postData?.map(post => (
+                    <div key={post._id} className="trade-post">
+                      <h5
+                        data-email={post.user.email}
+                        onClick={handleNameClick}
+                      >
+                        {post.user.username}
+                      </h5>
+                      <p>{post.content}</p>
+                      <small>{post.createdAt}</small>
+                    </div>
+                  ))}
+                </section>
+              </section>
+            </Col>
+          </Row>
+        )}
         <Row className="post">
           <Col>
-            <Form 
-              onSubmit={handlePostAdd} 
+            <Form
+              onSubmit={handlePostAdd}
               className="d-flex"
             >
               <FormControl
@@ -144,8 +175,8 @@ function TradeBlock() {
                     }
                   `}
                 </style>
-                <Button 
-                  variant="post" 
+                <Button
+                  variant="post"
                   size="lg"
                   type="submit"
                 >

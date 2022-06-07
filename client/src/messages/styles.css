@@ -9,7 +9,7 @@
 section.message-interface {
   background: var(--black);
   width: clamp(280px, 30%, 420px);
-  min-height: 285px;
+  min-height: 300px;
   max-height: 500px;
   height: fit-content;
   position: fixed;
