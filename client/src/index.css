@@ -50,6 +50,8 @@ code {
   color: var(--blue);
   background-color: var(--black);
   padding: 2%;
+  border: solid var(--lightGray);
+  box-shadow: inset 0px 0px 8px var(--lightGray), 0 0 15px var(--lightGray);
 }
 
 h3 {
@@ -270,6 +272,8 @@ h4{
   margin: 5%;
   background-color: var(--black);
   padding-top: 2%;
+  border: solid var(--lightGray);
+  /* box-shadow: inset 0px 0px 8px var(--lightGray), 0 0 15px var(--lightGray); */
 }
 
 
@@ -288,12 +292,16 @@ h4{
 .tradeBox{
   background-color: var(--black);
   padding: 2%;
+  box-shadow: inset 0px 0px 8px var(--orange), 0 0 15px var(--blue);
 }
 
 .backDropTradeSearch{
   margin: 5%;
   background-color: var(--black);
   padding: 3%;
+  border: solid var(--lightGray);
+  box-shadow: inset 0px 0px 8px var(--lightGray), 0 0 15px var(--lightGray);
+
 }
 
 .searchBox{
