@@ -17,14 +17,19 @@ const socket = io.connect();
 
 export default function MessageInterface({ userData, loadingUser, setChat }) {
 
+  // Fetch policy tells GQL to refire the request instead of grabbing it from cache
   const { loading, data } = useQuery(GET_CHATS, {
     fetchPolicy: 'cache-and-network',
   });
 
+  // "source of truth" for user's chat data
   const [chatData, setChatData] = useState(data?.myChats || []);
+  // this joins the user to a room unique to their username so they can receive new chats in real-time
   const [joinedMainRoom, setJoinedMainRoom] = useState(false);
+  // track unread messages
+  const [unreadMessages, setUnreadMessages] = useState(0);
 
-  // Importing the addChat mutation from GQL
+  // Importing the addChat and addMessage mutations from GQL
   const [addChat, { addChatError }] = useMutation(ADD_CHAT);
 
   const [addMessage, { addMessageError }] = useMutation(ADD_MESSAGE);
@@ -52,11 +57,10 @@ export default function MessageInterface({ userData, loadingUser, setChat }) {
   // This is tracking the user's MESSAGE input whenever they type
   const [chatInputData, setChatInputData] = useState('');
 
-  // Messages are given unique ids and added to the state variable
+  // Messages are POSTed to DB, set in state variable, and sent across socket
   const handleMessageSubmit = async (e) => {
     e.preventDefault();
     let newMessage;
-    // POST TO DB
     try {
       const { data } = await addMessage({
         variables: {
@@ -148,7 +152,7 @@ export default function MessageInterface({ userData, loadingUser, setChat }) {
       joinRoom(data.addChat);
       socket.emit('join_room', data.addChat._id);
       socket.emit('add_new_chat', { username, chat: data.addChat });
-      console.log()
+
       setChatData([...chatData, data.addChat]);
 
     } catch (err) {
@@ -168,18 +172,23 @@ export default function MessageInterface({ userData, loadingUser, setChat }) {
             if (chat.messages.find(item => item._id === data._id)) {
               return chat;
             }
-            chatRef.current = {
-              ...chat,
-              messages: [...chat.messages, data]
-            };
+            if (chat._id != chatRef.current._id) {
+              setUnreadMessages(unreadMessages + 1);
+            } else {
+              chatRef.current = {
+                ...chat,
+                messages: [...chat.messages, data]
+              };
+            }
             return {
               ...chat,
-              messages: [...chatRef.current.messages]
+              messages: [...chat.messages, data]
             };
           };
           return chat;
         });
       });
+
     });
 
     socket.on("receive_new_message", (data) => {
@@ -220,9 +229,14 @@ export default function MessageInterface({ userData, loadingUser, setChat }) {
   }
 
   if (!joinedMainRoom) {
-    socket.emit('join_room', userData.email);
+    socket.emit('join_room', userData.username);
     setJoinedMainRoom(true);
   };
+
+  const handleChatIconClick = () => {
+    setActiveChat(!activeChat);
+    setUnreadMessages(0);
+  }
 
   return (
     <section className="message-interface">
@@ -233,15 +247,18 @@ export default function MessageInterface({ userData, loadingUser, setChat }) {
           icon={faMinus}
           className='minimize-chat'
           color='#ff5722'
-        />
+          />
         {activeChat && (
           <FontAwesomeIcon
-            onClick={() => setActiveChat(!activeChat)}
-            icon={faMessage}
-            size='lg'
-            className='back-to-inbox'
-            color='#bdd310'
+          onClick={handleChatIconClick}
+          icon={faMessage}
+          size='lg'
+          className='back-to-inbox'
+          color='#bdd310'
           />
+          )}
+        {unreadMessages > 0 && (
+          <p className='unread'>new unread messages! {unreadMessages}</p>
         )}
       </div>
       {activeChat ? (
@@ -260,6 +277,7 @@ export default function MessageInterface({ userData, loadingUser, setChat }) {
             joinRoom={joinRoom}
             userData={userData}
             chatData={chatData}
+            setUnreadMessages={setUnreadMessages}
           />
           {addChatError && (
             <div className="my-3 p-3 bg-danger text-white">

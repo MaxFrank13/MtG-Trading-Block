@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   Container,
@@ -12,17 +12,36 @@ import {
 
 import { v4 as uuidv4 } from "uuid";
 
+import { autocomplete } from "../utils/autocomplete";
+import { AutocompleteBox } from "../components/AutocompleteBox";
+
 function Evaluate() {
+  // Searched cards & input
   const [searchedCards, setSearchedCards] = useState([]);
   const [searchInput, setSearchInput] = useState('');
+
+  // Card not found error handle
   const [cardNotFound, setCardNotFound] = useState(false);
+
+  // Trade evaluator
   const [cardsToGive, setCardsToGive] = useState([]);
   const [cardsToGiveTotal, setCardsToGiveTotal] = useState(0);
   const [cardsToReceive, setCardsToReceive] = useState([]);
   const [cardsToReceiveTotal, setCardsToReceiveTotal] = useState(0);
 
+  // Autocomplete
+  const [autoCompleteArray, setAutoCompleteArray] = useState([]);
+  const [triggerSubmit, setTriggerSubmit] = useState(false);
+
+  useEffect(() => {
+    if (triggerSubmit) {
+      handleFormSubmit();
+      setTriggerSubmit(false);
+    }
+  }, [triggerSubmit]);
+
   const handleFormSubmit = async (event) => {
-    event.preventDefault();
+    event?.preventDefault();
 
     if (!searchInput) {
       return false;
@@ -43,11 +62,12 @@ function Evaluate() {
         name: card.name,
         imageSmall: card.card_faces ? card.card_faces[0].image_uris?.small : card.image_uris?.small || "",
         imageNormal: card.card_faces ? card.card_faces[0].image_uris?.normal : card.image_uris?.normal || "",
-        price: parseFloat(card.prices.usd) ||0
+        price: parseFloat(card.prices.usd) || 0
       }));
 
       setSearchedCards(cardData);
       setSearchInput('');
+      setAutoCompleteArray([]);
     } catch (err) {
       console.error(err);
     }
@@ -75,6 +95,18 @@ function Evaluate() {
     setCardsToReceive(cardsToReceive.filter(card => card.evaluatorId !== e.target.dataset.id));
   };
 
+  const handleSearchInput = async (e) => {
+    const queryString = e.target.value;
+    setSearchInput(queryString);
+
+    if (queryString.length > 2) {
+      const data = await autocomplete(queryString);
+      setAutoCompleteArray(data);
+      return;
+    };
+    setAutoCompleteArray([]);
+  };
+
   return (
     <Container>
       <Row>
@@ -99,7 +131,11 @@ function Evaluate() {
                       <img src={card.imageNormal} alt={card.name} variant="top" className="cardImg" />
                     ) : null}
                     <Card.Body>
-                      <p className="card-price">${card.price.toFixed(2)}</p>
+                      {card.price > 0 ? (
+                        <p className="card-price">${card.price.toFixed(2)}</p>
+                      ) : (
+                        <small className="no-price">no price data available</small>
+                      )}
                       <>
                         <style type="text/css">
                           {`
@@ -151,7 +187,11 @@ function Evaluate() {
                       <img src={card.imageNormal} alt={card.name} variant="top" className="cardImg" />
                     ) : null}
                     <Card.Body>
-                      <p className="card-price">${card.price.toFixed(2)}</p>
+                      {card.price > 0 ? (
+                        <p className="card-price">${card.price.toFixed(2)}</p>
+                      ) : (
+                        <small className="no-price">no price data available</small>
+                      )}
                       <>
                         <style type="text/css">
                           {`
@@ -196,7 +236,7 @@ function Evaluate() {
             <Form className="d-flex" onSubmit={handleFormSubmit}>
               <FormControl
                 value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
+                onChange={handleSearchInput}
                 type="search"
                 placeholder="Search Cards"
                 className="me-2"
@@ -229,6 +269,11 @@ function Evaluate() {
               </div>
             )}
           </Col>
+          <AutocompleteBox
+            cards={autoCompleteArray}
+            setSearchInput={setSearchInput}
+            setTriggerSubmit={setTriggerSubmit}
+          />
         </Row>
 
         <Row xs={1} md={2} lg={3} className="g-4">

@@ -72,7 +72,7 @@ function TradeBlock() {
   };
 
   const handleNameClick = (e) => {
-    setCopyName(e.target.dataset.email);
+    setCopyName(e.target.dataset.username);
   }
 
   return (
@@ -126,13 +126,13 @@ function TradeBlock() {
             <Col>
               <section className="trade-block">
                 {copyAlert && copyName && (
-                  <h4 className="copy-alert">Copied {copyName} to clipboard!</h4>
+                  <h4 className="copy-alert">copied "{copyName}" to clipboard</h4>
                 )}
                 <section>
                   {postData?.map(post => (
                     <div key={post._id} className="trade-post">
                       <h5
-                        data-email={post.user.email}
+                        data-username={post.user.username}
                         onClick={handleNameClick}
                       >
                         {post.user.username}
