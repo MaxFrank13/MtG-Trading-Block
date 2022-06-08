@@ -85,7 +85,10 @@ function TradeBlock() {
             <h3>Trading Block</h3>
           </Col>
         </Row>
-        <Row className="search">
+
+        {/* Search bar for later functionality */}
+        
+        {/* <Row className="search">
           <Col>
             <Form className="d-flex">
               <FormControl
@@ -116,7 +119,7 @@ function TradeBlock() {
               </>
             </Form>
           </Col>
-        </Row>
+        </Row> */}
 
         {loading ? (
           <h3>Loading posts...</h3>
