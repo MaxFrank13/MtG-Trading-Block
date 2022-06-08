@@ -191,7 +191,7 @@ function Evaluate() {
             <h3>Find Cards</h3>
           </Col>
         </Row> */}
-        <Row className="search">
+        <Row className="tradeSearch">
           <Col>
             <Form className="d-flex" onSubmit={handleFormSubmit}>
               <FormControl

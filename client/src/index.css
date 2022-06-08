@@ -85,7 +85,11 @@ h3 {
   padding-top: 5%;
   padding-left: 15%;
   padding-right: 15%;
-
+}
+.tradeSearch{
+  padding-left: 15%;
+  padding-right: 15%;
+  margin-bottom: 2%;
 }
 
 .post{
@@ -226,10 +230,25 @@ form.signup-form {
 }
 
 .bar{
-  background-color: var(--olive);
+  /* background-color: var(--olive); */
   margin-left: 2%;
   margin-right: 2%;
+  /* box-shadow: inset 0px 0px 8px var(--olive), 0 0 15px var(--olive); */
+}
+
+.greenBar{
+  background-color: var(--olive);
   box-shadow: inset 0px 0px 8px var(--olive), 0 0 15px var(--olive);
+}
+
+.blueBar{
+  background-color: var(--blue);
+  box-shadow: inset 0px 0px 8px var(--blue), 0 0 15px var(--blue);
+}
+
+.orangeBar{
+  background-color: var(--orange);
+  box-shadow: inset 0px 0px 8px var(--orange), 0 0 15px var(--orange);
 }
 
 .me-2{
