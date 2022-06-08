@@ -40,9 +40,15 @@ section.message-interface::-webkit-scrollbar-track {
 
 div.message-interface-header {
   display: flex;
+  align-items: center;
   padding: 0.25rem 0.75rem 0;
   background: transparent;
   gap: 3rem;
+}
+
+div.message-interface-header p.unread {
+  color: var(--yellowGreen);
+  font-size: 0.75rem;
 }
 
 .back-to-inbox,

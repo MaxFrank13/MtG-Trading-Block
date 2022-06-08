@@ -9,9 +9,13 @@ export function AutocompleteBox({ cards, setSearchInput, setTriggerSubmit }) {
 
   return (
     <div className="autocomplete-box">
-      {cards?.map((card, idx) => (
-        <p key={idx} onClick={handleCardClick}>{card}</p>
-      ))}
+      {cards.length > 0 && (
+        <div>
+          {cards?.map((card, idx) => (
+            <p key={idx} onClick={handleCardClick}>{card}</p>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

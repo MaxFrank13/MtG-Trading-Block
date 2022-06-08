@@ -1,7 +1,7 @@
 import React from 'react';
 import FormInput from './FormInput';
 
-export default function InboxInterface({ onChange, handleNewChatSubmit, setActiveChat, joinRoom, userData, chatData }) {
+export default function InboxInterface({ onChange, handleNewChatSubmit, setActiveChat, joinRoom, userData, chatData, setUnreadMessages }) {
 
   const handleChatClick = (e) => {
     e.stopPropagation()
@@ -12,6 +12,7 @@ export default function InboxInterface({ onChange, handleNewChatSubmit, setActiv
     console.log(...currentChat);
     joinRoom(...currentChat);
     setActiveChat(true);
+    setUnreadMessages(0);
   };
 
   if (!chatData) {

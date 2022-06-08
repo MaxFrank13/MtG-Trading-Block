@@ -25,7 +25,7 @@ export default function ChatInterface({ handleMessageSubmit, onChange, currentMe
           <div
             key={message._id}
             className={userData.username === message.username ? 'chat-me' : 'chat-them'}
-            data-createdAt={message.createdAt}
+            data-createdat={message.createdAt}
           >
             <p>
               {message.content}

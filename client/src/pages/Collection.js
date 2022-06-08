@@ -155,10 +155,11 @@ function Collection() {
     setSearchInput(queryString);
 
     if (queryString.length > 2) {
-      console.log('here');
       const data = await autocomplete(queryString);
       setAutoCompleteArray(data);
-    }
+      return;
+    };
+    setAutoCompleteArray([]);
   };
 
   return (

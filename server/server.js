@@ -32,7 +32,7 @@ io.on('connection', (socket) => {
   });
   
   socket.on('add_new_chat', (data) => {
-    socket.to(data.emailInput).emit('receive_new_message', data.chat)
+    socket.to(data.username).emit('receive_new_message', data.chat)
   });
 
   socket.on('join_room', (data) => {
